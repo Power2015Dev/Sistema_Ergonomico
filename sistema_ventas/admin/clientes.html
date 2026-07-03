@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Clientes | Panel ErgoVida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <link rel="stylesheet" href="../assets/css/icons.css">
+</head>
+<body>
+
+<div class="admin-layout">
+  <!-- SIDEBAR (inyectado por admin-sidebar.js) -->
+  <aside class="sidebar"></aside>
+
+  <header class="admin-header">
+    <div>
+      <span class="page-title">Clientes</span>
+      <span class="breadcrumb">/ Gestión de clientes</span>
+    </div>
+    <div class="header-actions">
+      <div class="search-bar">
+        <span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="search-cli" placeholder="Buscar por nombre, correo...">
+      </div>
+      <button class="notif-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+      <button class="btn btn-primary" id="btn-nuevo-cli">Nuevo Cliente</button>
+    </div>
+  </header>
+
+  <main class="admin-content">
+    <div class="page-header">
+      <h1>Gestión de Clientes</h1>
+      <p>Registra, consulta, edita y elimina los clientes del sistema de ventas.</p>
+    </div>
+
+    <div class="grid-4" style="margin-bottom:1.75rem;">
+      <div class="stat-card"><div class="stat-icon teal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="stat-info"><div class="stat-value">2,543</div><div class="stat-label">Total clientes</div></div></div>
+      <div class="stat-card"><div class="stat-icon green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="stat-info"><div class="stat-value">23</div><div class="stat-label">Nuevos esta semana</div></div></div>
+      <div class="stat-card"><div class="stat-icon amber"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="stat-info"><div class="stat-value">$312</div><div class="stat-label">Ticket promedio</div></div></div>
+      <div class="stat-card"><div class="stat-icon blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="#2563eb" stroke="#2563eb" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="stat-info"><div class="stat-value">184</div><div class="stat-label">Clientes VIP</div></div></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="filters">
+        <button class="filter-chip active" id="fc-t">Todos (2,543)</button>
+        <button class="filter-chip" id="fc-vip">VIP (184)</button>
+        <button class="filter-chip" id="fc-activos">Activos (2,201)</button>
+        <button class="filter-chip" id="fc-inactivos">Inactivos (342)</button>
+      </div>
+      <div style="margin-left:auto;">
+        <button class="btn btn-secondary btn-sm" id="btn-exp-cli">📥 Exportar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body" style="padding:0;">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Teléfono</th>
+                <th>Ciudad</th>
+                <th>Pedidos</th>
+                <th>Total gastado</th>
+                <th>Tipo</th>
+                <th>Registro</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:.75rem;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:var(--primary-glow);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--primary);">AM</div>
+                    <div><strong>Ana Martínez</strong><div style="font-size:.78rem;color:var(--text-muted);">ana@mail.com</div></div>
+                  </div>
+                </td>
+                <td style="font-size:.85rem;">+58 412 111 1111</td>
+                <td style="font-size:.85rem;">Caracas</td>
+                <td style="font-weight:700;text-align:center;">12</td>
+                <td style="font-weight:700;color:var(--primary);">$4,820.00</td>
+                <td><span class="badge badge-warning">⭐ VIP</span></td>
+                <td style="font-size:.78rem;color:var(--text-muted);">15/01/2024</td>
+                <td>
+                  <div style="display:flex;gap:.4rem;">
+                    <button class="btn btn-secondary btn-sm btn-icon" onclick="verCliente(1)" title="Ver perfil"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="btn btn-warning btn-sm btn-icon" onclick="editarCliente(1)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCliente(1)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:.75rem;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-weight:700;color:#1e40af;">CL</div>
+                    <div><strong>Carlos López</strong><div style="font-size:.78rem;color:var(--text-muted);">carlos@mail.com</div></div>
+                  </div>
+                </td>
+                <td style="font-size:.85rem;">+58 414 222 2222</td>
+                <td style="font-size:.85rem;">Maracaibo</td>
+                <td style="font-weight:700;text-align:center;">5</td>
+                <td style="font-weight:700;color:var(--primary);">$1,640.00</td>
+                <td><span class="badge badge-success">Regular</span></td>
+                <td style="font-size:.78rem;color:var(--text-muted);">08/03/2025</td>
+                <td>
+                  <div style="display:flex;gap:.4rem;">
+                    <button class="btn btn-secondary btn-sm btn-icon" onclick="verCliente(2)" title="Ver perfil"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="btn btn-warning btn-sm btn-icon" onclick="editarCliente(2)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCliente(2)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:.75rem;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-weight:700;color:#92400e;">MG</div>
+                    <div><strong>María González</strong><div style="font-size:.78rem;color:var(--text-muted);">maria@mail.com</div></div>
+                  </div>
+                </td>
+                <td style="font-size:.85rem;">+58 416 333 3333</td>
+                <td style="font-size:.85rem;">Valencia</td>
+                <td style="font-weight:700;text-align:center;">8</td>
+                <td style="font-weight:700;color:var(--primary);">$2,900.00</td>
+                <td><span class="badge badge-warning">⭐ VIP</span></td>
+                <td style="font-size:.78rem;color:var(--text-muted);">22/06/2024</td>
+                <td>
+                  <div style="display:flex;gap:.4rem;">
+                    <button class="btn btn-secondary btn-sm btn-icon" onclick="verCliente(3)" title="Ver perfil"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="btn btn-warning btn-sm btn-icon" onclick="editarCliente(3)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCliente(3)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:.75rem;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:#d1fae5;display:flex;align-items:center;justify-content:center;font-weight:700;color:#065f46;">SR</div>
+                    <div><strong>Sofía Ramírez</strong><div style="font-size:.78rem;color:var(--text-muted);">sofia@mail.com</div></div>
+                  </div>
+                </td>
+                <td style="font-size:.85rem;">+58 424 444 4444</td>
+                <td style="font-size:.85rem;">Barquisimeto</td>
+                <td style="font-weight:700;text-align:center;">2</td>
+                <td style="font-weight:700;color:var(--primary);">$340.00</td>
+                <td><span class="badge badge-info">Nuevo</span></td>
+                <td style="font-size:.78rem;color:var(--text-muted);">29/06/2026</td>
+                <td>
+                  <div style="display:flex;gap:.4rem;">
+                    <button class="btn btn-secondary btn-sm btn-icon" onclick="verCliente(4)" title="Ver perfil"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="btn btn-warning btn-sm btn-icon" onclick="editarCliente(4)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCliente(4)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="padding:1rem 1.75rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:.82rem;color:var(--text-muted);">Mostrando 4 de 2,543 clientes</span>
+        <div class="pagination">
+          <button class="page-btn">‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL: NUEVO / EDITAR CLIENTE -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-cli-title">Nuevo Cliente</h2>
+      <button class="modal-close" onclick="cerrarModal('modal-cliente')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <form id="form-cliente">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="cli-nombre">Nombre *</label>
+            <input id="cli-nombre" type="text" class="form-control" placeholder="Ana" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cli-apellido">Apellido *</label>
+            <input id="cli-apellido" type="text" class="form-control" placeholder="Martínez" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cli-email">Correo Electrónico *</label>
+          <input id="cli-email" type="email" class="form-control" placeholder="ana@mail.com" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="cli-tel">Teléfono</label>
+            <input id="cli-tel" type="tel" class="form-control" placeholder="+58 412 000 0000">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cli-ciudad">Ciudad</label>
+            <input id="cli-ciudad" type="text" class="form-control" placeholder="Caracas">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cli-direccion">Dirección</label>
+          <textarea id="cli-direccion" class="form-control" style="min-height:70px;" placeholder="Av. Principal, Torre X, Piso Y..."></textarea>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="cli-tipo">Tipo de Cliente</label>
+            <select id="cli-tipo" class="form-control">
+              <option>Regular</option>
+              <option>VIP</option>
+              <option>Corporativo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cli-estado">Estado</label>
+            <select id="cli-estado" class="form-control">
+              <option>Activo</option>
+              <option>Inactivo</option>
+              <option>Bloqueado</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-cliente')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-guardar-cli" onclick="guardarCliente()">Guardar Cliente</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: VER PERFIL -->
+<div class="modal-overlay" id="modal-perfil">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <h2 class="modal-title">Perfil del Cliente</h2>
+      <button class="modal-close" onclick="cerrarModal('modal-perfil')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem;">
+        <div style="width:64px;height:64px;border-radius:50%;background:var(--primary-glow);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;color:var(--primary);">AM</div>
+        <div>
+          <h3 style="font-size:1.2rem;font-weight:700;">Ana Martínez</h3>
+          <span class="badge badge-warning" style="margin-top:.3rem;">⭐ Cliente VIP</span>
+        </div>
+      </div>
+      <div class="grid-2" style="gap:.75rem;font-size:.88rem;">
+        <div><span style="color:var(--text-muted);">📧 Email</span><br><strong>ana@mail.com</strong></div>
+        <div><span style="color:var(--text-muted);">📱 Teléfono</span><br><strong>+58 412 111 1111</strong></div>
+        <div><span style="color:var(--text-muted);">🏙️ Ciudad</span><br><strong>Caracas</strong></div>
+        <div><span style="color:var(--text-muted);">📅 Registro</span><br><strong>15/01/2024</strong></div>
+        <div><span style="color:var(--text-muted);">📦 Pedidos</span><br><strong style="color:var(--primary);">12 pedidos</strong></div>
+        <div><span style="color:var(--text-muted);">💰 Total gastado</span><br><strong style="color:var(--primary);">$4,820.00</strong></div>
+      </div>
+      <hr class="divider">
+      <h4 style="font-size:.88rem;font-weight:700;margin-bottom:.75rem;color:var(--secondary);">Últimos pedidos</h4>
+      <table class="data-table">
+        <thead><tr><th>#Pedido</th><th>Fecha</th><th>Total</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>#PED-1048</td><td>03/07/2026</td><td>$728.00</td><td><span class="badge badge-success">Entregado</span></td></tr>
+          <tr><td>#PED-1031</td><td>15/05/2026</td><td>$250.00</td><td><span class="badge badge-success">Entregado</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-perfil')">Cerrar</button>
+      <button class="btn btn-primary" onclick="editarCliente(1);cerrarModal('modal-perfil');">Editar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ELIMINAR CLIENTE -->
+<div class="modal-overlay" id="modal-elim-cli">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h2 class="modal-title">Eliminar Cliente</h2>
+      <button class="modal-close" onclick="cerrarModal('modal-elim-cli')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-danger"><span>⚠️</span><span>Esta acción eliminará el cliente y todos sus datos del sistema. No se puede deshacer.</span></div>
+      <p style="color:var(--text-soft);font-size:.9rem;">¿Confirmas la eliminación de <strong id="cli-nombre-elim">Ana Martínez</strong>?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-elim-cli')">Cancelar</button>
+      <button class="btn btn-danger" id="btn-conf-elim-cli">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toasts"></div>
+
+<script>
+  document.querySelectorAll('.filter-chip').forEach(c => {
+    c.addEventListener('click', function(){
+      document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  function abrirModal(id){ document.getElementById(id).classList.add('active'); }
+  function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
+
+  document.getElementById('btn-nuevo-cli').addEventListener('click', function(){
+    document.getElementById('modal-cli-title').textContent = '➕ Nuevo Cliente';
+    document.getElementById('form-cliente').reset();
+    abrirModal('modal-cliente');
+  });
+
+  function editarCliente(id){
+    document.getElementById('modal-cli-title').textContent = '✏️ Editar Cliente #' + id;
+    document.getElementById('cli-nombre').value = 'Ana';
+    document.getElementById('cli-apellido').value = 'Martínez';
+    document.getElementById('cli-email').value = 'ana@mail.com';
+    abrirModal('modal-cliente');
+  }
+
+  function verCliente(id){ abrirModal('modal-perfil'); }
+
+  function eliminarCliente(id){
+    document.getElementById('cli-nombre-elim').textContent = 'Cliente #' + id;
+    abrirModal('modal-elim-cli');
+  }
+
+  function guardarCliente(){
+    cerrarModal('modal-cliente');
+    showToast('success', '✓ Cliente guardado exitosamente');
+  }
+
+  document.getElementById('btn-conf-elim-cli').addEventListener('click', function(){
+    cerrarModal('modal-elim-cli');
+    showToast('error', '🗑️ Cliente eliminado del sistema');
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', function(e){ if(e.target === this) this.classList.remove('active'); });
+  });
+
+  function showToast(type, msg){
+    const c = document.getElementById('toasts');
+    const t = document.createElement('div');
+    t.className = 'toast ' + type;
+    t.textContent = msg;
+    c.appendChild(t);
+    setTimeout(() => t.remove(), 3500);
+  }
+</script>
+<script src="../assets/js/admin-sidebar.js"></script>
+</body>
+</html>

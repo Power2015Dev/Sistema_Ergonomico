@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ErgoVida – Mobiliario ergonómico premium para tu salud y productividad.">
+  <title>ErgoVida | Salud y Productividad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/public.css">
+  <style>
+    /* Hero con imagen real */
+    .hero-with-img {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 88vh;
+      align-items: center;
+      padding: 0 5%;
+      gap: 3rem;
+      background: linear-gradient(135deg, #f0fdf9 0%, #ecfdf5 60%, #f0fdff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-with-img::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(20,184,166,.08) 0%, transparent 70%);
+    }
+    .hero-left { position: relative; z-index: 1; }
+    .hero-right {
+      position: relative; z-index: 1;
+      display: flex; justify-content: flex-end;
+    }
+    .hero-product-img {
+      width: 100%;
+      max-width: 520px;
+      border-radius: 28px;
+      object-fit: cover;
+      filter: drop-shadow(0 40px 60px rgba(15,118,110,.18));
+      animation: floatUp 6s ease-in-out infinite;
+    }
+    @keyframes floatUp {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+    .hero-badge-img {
+      position: absolute;
+      bottom: 2rem; left: -1rem;
+      background: #fff;
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,.12);
+      display: flex; align-items: center; gap: .75rem;
+      animation: floatUp 6s ease-in-out infinite .5s;
+    }
+    .hero-badge-img .badge-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: var(--primary-glow);
+    }
+    /* Feature icons as images */
+    .feature-img-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      object-fit: cover;
+      margin: 0 auto 1.25rem;
+      display: block;
+      box-shadow: 0 4px 16px rgba(15,118,110,.15);
+    }
+    @media(max-width:768px) {
+      .hero-with-img { grid-template-columns: 1fr; padding: 4rem 5%; }
+      .hero-right { justify-content: center; }
+      .hero-badge-img { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="index.html" class="site-logo">
+    <div class="logo-mark">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+        <path d="M20.5 13V7a2 2 0 0 0-2-2h-13a2 2 0 0 0-2 2v6"/>
+        <path d="M3 13h18"/>
+        <path d="M7 13v6M17 13v6M5 19h14"/>
+      </svg>
+    </div>
+    <div class="logo-text">ErgoVida</div>
+  </a>
+  <nav class="site-nav">
+    <a href="index.html">Inicio</a>
+    <a href="pages/catalogo.html">Catálogo</a>
+    <a href="#">Diagnóstico</a>
+    <a href="#">Nosotros</a>
+    <a href="pages/login.html" class="nav-cta">Ingresar</a>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero-with-img">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--primary)" stroke="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Colección Premium 2026
+      </div>
+      <h1 style="font-size:3rem;font-weight:800;color:var(--secondary);line-height:1.12;letter-spacing:-.03em;margin-bottom:1.25rem;">
+        Tu cuerpo merece el mejor <span style="color:var(--primary);">soporte</span>
+      </h1>
+      <p style="font-size:1.1rem;color:var(--text-soft);max-width:480px;line-height:1.75;margin-bottom:2.5rem;">
+        Mobiliario ergonómico de grado profesional diseñado para proteger tu postura, eliminar el dolor y elevar tu concentración al máximo nivel.
+      </p>
+      <div class="hero-actions" style="justify-content:flex-start;">
+        <a href="pages/catalogo.html" class="btn btn-primary btn-lg">Ver Catálogo</a>
+        <a href="#" class="btn btn-secondary btn-lg">Diagnóstico Gratis</a>
+      </div>
+      <div style="display:flex;gap:2.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);">
+        <div><div style="font-size:1.7rem;font-weight:800;color:var(--secondary);">2,500+</div><div style="font-size:.8rem;color:var(--text-muted);font-weight:500;">Clientes felices</div></div>
+        <div><div style="font-size:1.7rem;font-weight:800;color:var(--secondary);">98%</div><div style="font-size:.8rem;color:var(--text-muted);font-weight:500;">Satisfacción</div></div>
+        <div><div style="font-size:1.7rem;font-weight:800;color:var(--secondary);">120+</div><div style="font-size:.8rem;color:var(--text-muted);font-weight:500;">Productos</div></div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <img src="assets/images/hero.png"
+           alt="Espacio de trabajo ergonómico premium"
+           class="hero-product-img"
+           onerror="this.src='https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&q=80'">
+      <div class="hero-badge-img">
+        <img src="assets/images/silla-pro.png"
+             alt="Silla Pro"
+             class="badge-icon"
+             onerror="this.src='https://images.unsplash.com/photo-1541558869434-2840d308329a?w=60&q=80'">
+        <div>
+          <div style="font-size:.82rem;font-weight:700;color:var(--secondary);">Silla Pro X3</div>
+          <div style="font-size:.75rem;color:var(--primary);font-weight:600;">Más vendida ★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div style="background:var(--secondary);padding:1.25rem 5%;display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap;">
+    <div style="color:#94a3b8;font-size:.82rem;font-weight:500;display:flex;align-items:center;gap:.6rem;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Certificado BIFMA
+    </div>
+    <div style="color:#94a3b8;font-size:.82rem;font-weight:500;display:flex;align-items:center;gap:.6rem;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Garantía 5 años
+    </div>
+    <div style="color:#94a3b8;font-size:.82rem;font-weight:500;display:flex;align-items:center;gap:.6rem;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Envío gratis +$150
+    </div>
+    <div style="color:#94a3b8;font-size:.82rem;font-weight:500;display:flex;align-items:center;gap:.6rem;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      30 días de devolución
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="section-head">
+      <h2>¿Por qué ErgoVida?</h2>
+      <p>Diseñado por especialistas en biomecánica, respaldado por ciencia.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#d1fae5;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </div>
+        <h3>Prevención Postural</h3>
+        <p>Tecnología de alineación vertebral que reduce el estrés lumbar hasta un 60% en jornadas prolongadas.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#dbeafe;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>Mayor Concentración</h3>
+        <p>Un espacio cómodo reduce la fatiga mental. Reportamos +35% de productividad en usuarios frecuentes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#fef3c7;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3>Ajuste Total</h3>
+        <p>Cada producto se adapta a tu morfología con regulaciones de altura, profundidad y tensión independientes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#d1fae5;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Materiales Premium</h3>
+        <p>Mallas respirables certificadas, estructuras de aluminio aeronáutico y espumas de memoria celular.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- POPULAR PRODUCTS -->
+  <section style="padding:5rem 5%;background:var(--bg);">
+    <div class="section-head">
+      <h2>Más Populares</h2>
+      <p>Los favoritos de nuestra comunidad ergonómica.</p>
+    </div>
+    <div class="products-grid" style="max-width:1100px;margin:0 auto;">
+
+      <div class="product-card">
+        <div class="product-img" style="background:#f1f5f9;padding:1rem;position:relative;">
+          <img src="assets/images/silla-pro.png"
+               alt="Silla Ergonómica Pro X3"
+               style="width:100%;height:100%;object-fit:contain;"
+               onerror="this.parentElement.innerHTML='<img src=\'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=400&q=80\' style=\'width:100%;height:100%;object-fit:cover;\' alt=\'Silla Pro\'>'">
+          <span class="product-badge-corner"><span class="badge badge-success">Top Ventas</span></span>
+        </div>
+        <div class="product-card-body">
+          <div class="product-cat">Sillas Operativas</div>
+          <div class="product-name">Silla Ergonómica Pro X3</div>
+          <div class="product-desc">Soporte lumbar 3D dinámico con malla respirante de alta tensión. Brazos 4D ajustables.</div>
+          <div class="product-footer">
+            <div class="product-price">$250.00</div>
+            <a href="pages/detalle.html" class="btn btn-primary btn-sm">Ver más</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img" style="background:#f8f4e8;padding:1rem;position:relative;">
+          <img src="assets/images/escritorio.png"
+               alt="Escritorio Motorizado Elite"
+               style="width:100%;height:100%;object-fit:contain;"
+               onerror="this.parentElement.innerHTML='<img src=\'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=400&q=80\' style=\'width:100%;height:100%;object-fit:cover;\' alt=\'Escritorio\'>'" >
+          <span class="product-badge-corner"><span class="badge badge-info">Nuevo</span></span>
+        </div>
+        <div class="product-card-body">
+          <div class="product-cat">Escritorios</div>
+          <div class="product-name">Escritorio Motorizado Elite</div>
+          <div class="product-desc">Ajuste eléctrico silencioso, memoria 4 posiciones, superficie antirayaduras premium.</div>
+          <div class="product-footer">
+            <div class="product-price">$420.00</div>
+            <a href="pages/detalle.html" class="btn btn-primary btn-sm">Ver más</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img" style="background:#eef2ff;padding:1rem;position:relative;">
+          <img src="assets/images/soporte.png"
+               alt="Soporte Monitor UltraWide"
+               style="width:100%;height:100%;object-fit:contain;"
+               onerror="this.parentElement.innerHTML='<img src=\'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&q=80\' style=\'width:100%;height:100%;object-fit:cover;\' alt=\'Soporte\'>'">
+          <span class="product-badge-corner"><span class="badge badge-warning">Oferta</span></span>
+        </div>
+        <div class="product-card-body">
+          <div class="product-cat">Accesorios</div>
+          <div class="product-name">Soporte Monitor UltraWide</div>
+          <div class="product-desc">Brazo articulado de 6 ejes. Compatible con monitores de hasta 38". Gestión de cables incluida.</div>
+          <div class="product-footer">
+            <div class="product-price">$89.00</div>
+            <a href="pages/detalle.html" class="btn btn-primary btn-sm">Ver más</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" style="margin-top:2.5rem;">
+      <a href="pages/catalogo.html" class="btn btn-secondary btn-lg">Ver todo el catálogo →</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="brand-name" style="display:flex;align-items:center;gap:.5rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-light)" stroke-width="2.5"><path d="M20.5 13V7a2 2 0 0 0-2-2h-13a2 2 0 0 0-2 2v6"/><path d="M3 13h18"/><path d="M7 13v6M17 13v6M5 19h14"/></svg>
+        ErgoVida
+      </div>
+      <p>Especialistas en mobiliario ergonómico para entornos profesionales y hogareños. Diseño con propósito, calidad sin compromiso.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Productos</h4>
+      <a href="#">Sillas Operativas</a>
+      <a href="#">Escritorios Regulables</a>
+      <a href="#">Soportes y Brazos</a>
+      <a href="#">Accesorios</a>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <a href="#">Nosotros</a>
+      <a href="#">Blog</a>
+      <a href="#">Distribuidores</a>
+      <a href="#">Garantía</a>
+    </div>
+    <div class="footer-col">
+      <h4>Soporte</h4>
+      <a href="#">Contacto</a>
+      <a href="#">FAQ</a>
+      <a href="#">Devoluciones</a>
+      <a href="#">Términos</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 ErgoVida. Todos los derechos reservados.</span>
+    <span style="color:#475569;">Diseñado para tu bienestar</span>
+  </div>
+</footer>
+
+</body>
+</html>

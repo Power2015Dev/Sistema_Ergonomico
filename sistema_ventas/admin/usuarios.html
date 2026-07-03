@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Usuarios | Panel ErgoVida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <link rel="stylesheet" href="../assets/css/icons.css">
+</head>
+<body>
+
+<div class="admin-layout">
+  <!-- SIDEBAR (inyectado por admin-sidebar.js) -->
+  <aside class="sidebar"></aside>
+
+  <header class="admin-header">
+    <div>
+      <span class="page-title">Usuarios del Sistema</span>
+      <span class="breadcrumb">/ Control de acceso</span>
+    </div>
+    <div class="header-actions">
+      <div class="search-bar">
+        <span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="search-usr" placeholder="Buscar usuario...">
+      </div>
+      <button class="notif-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+      <button class="btn btn-primary" id="btn-nuevo-usr">Nuevo Usuario</button>
+    </div>
+  </header>
+
+  <main class="admin-content">
+    <div class="page-header">
+      <h1>Gestión de Usuarios</h1>
+      <p>Administra los usuarios con acceso al panel de gestión del sistema.</p>
+    </div>
+
+    <div class="grid-4" style="margin-bottom:1.75rem;">
+      <div class="stat-card"><div class="stat-icon teal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="stat-info"><div class="stat-value">6</div><div class="stat-label">Usuarios totales</div></div></div>
+      <div class="stat-card"><div class="stat-icon green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="stat-info"><div class="stat-value">1</div><div class="stat-label">Super Admin</div></div></div>
+      <div class="stat-card"><div class="stat-icon amber"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="stat-info"><div class="stat-value">3</div><div class="stat-label">Administradores</div></div></div>
+      <div class="stat-card"><div class="stat-icon blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="stat-info"><div class="stat-value">2</div><div class="stat-label">Vendedores</div></div></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="filters">
+        <button class="filter-chip active" id="fu-todos">Todos (6)</button>
+        <button class="filter-chip" id="fu-admin">Administradores</button>
+        <button class="filter-chip" id="fu-vend">Vendedores</button>
+        <button class="filter-chip" id="fu-activos">Activos</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body" style="padding:0;">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Usuario</th><th>Rol</th><th>Último acceso</th><th>Estado</th><th>Permisos</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:.75rem;">
+                    <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;">A</div>
+                    <div><strong>Administrador</strong><div style="font-size:.78rem;color:var(--text-muted);">admin@ergovida.com</div></div>
+                  </div>
+                </td>
+                <td><span class="badge badge-warning">Super Admin</span></td>
+                <td style="font-size:.82rem;color:var(--text-muted);">Hoy, 10:24 am</td>
+                <td><span class="badge badge-success">Activo</span></td>
+                <td style="font-size:.78rem;color:var(--text-muted);">Acceso total</td>
+                <td>
+                  <div style="display:flex;gap:.4rem;">
+                    <button class="btn btn-secondary btn-sm btn-icon" onclick="editarUsr(1)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-danger btn-sm btn-icon" disabled style="opacity:.3;cursor:not-allowed;" title="No se puede eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:.75rem;">
+                    <div style="width:42px;height:42px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-weight:700;color:#1e40af;">LR</div>
+                    <div><strong>Laura Rojas</strong><div style="font-size:.78rem;color:var(--text-muted);">laura@ergovida.com</div></div>
+                  </div>
+                </td>
+                <td><span class="badge badge-info">Administrador</span></td>
+                <td style="font-size:.82rem;color:var(--text-muted);">Hoy, 09:15 am</td>
+                <td><span class="badge badge-success">Activo</span></td>
+                <td style="font-size:.78rem;color:var(--text-muted);">Productos, Pedidos</td>
+                <td>
+                  <div style="display:flex;gap:.4rem;">
+                    <button class="btn btn-secondary btn-sm btn-icon" onclick="editarUsr(2)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarUsr(2)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:.75rem;">
+                    <div style="width:42px;height:42px;border-radius:50%;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-weight:700;color:#92400e;">JP</div>
+                    <div><strong>Jorge Pérez</strong><div style="font-size:.78rem;color:var(--text-muted);">jorge@ergovida.com</div></div>
+                  </div>
+                </td>
+                <td><span class="badge badge-success">Vendedor</span></td>
+                <td style="font-size:.82rem;color:var(--text-muted);">02/07/2026, 3:00 pm</td>
+                <td><span class="badge badge-success">Activo</span></td>
+                <td style="font-size:.78rem;color:var(--text-muted);">Solo Pedidos</td>
+                <td>
+                  <div style="display:flex;gap:.4rem;">
+                    <button class="btn btn-secondary btn-sm btn-icon" onclick="editarUsr(3)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarUsr(3)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:.75rem;">
+                    <div style="width:42px;height:42px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-weight:700;color:#991b1b;">MC</div>
+                    <div><strong>María Castro</strong><div style="font-size:.78rem;color:var(--text-muted);">maria.c@ergovida.com</div></div>
+                  </div>
+                </td>
+                <td><span class="badge badge-info">Administrador</span></td>
+                <td style="font-size:.82rem;color:var(--text-muted);">28/06/2026</td>
+                <td><span class="badge badge-danger">Inactivo</span></td>
+                <td style="font-size:.78rem;color:var(--text-muted);">Catálogo, Clientes</td>
+                <td>
+                  <div style="display:flex;gap:.4rem;">
+                    <button class="btn btn-secondary btn-sm btn-icon" onclick="editarUsr(4)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarUsr(4)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL: NUEVO / EDITAR USUARIO -->
+<div class="modal-overlay" id="modal-usuario">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-usr-title">Nuevo Usuario</h2>
+      <button class="modal-close" onclick="cerrarModal('modal-usuario')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <form id="form-usuario">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="usr-nombre">Nombre *</label>
+            <input id="usr-nombre" type="text" class="form-control" placeholder="Laura" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="usr-apellido">Apellido *</label>
+            <input id="usr-apellido" type="text" class="form-control" placeholder="Rojas" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="usr-email">Correo del sistema *</label>
+          <input id="usr-email" type="email" class="form-control" placeholder="laura@ergovida.com" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="usr-rol">Rol *</label>
+            <select id="usr-rol" class="form-control" required>
+              <option value="">Seleccionar...</option>
+              <option value="admin">Administrador</option>
+              <option value="vendedor">Vendedor</option>
+              <option value="almacen">Almacén</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="usr-estado">Estado</label>
+            <select id="usr-estado" class="form-control">
+              <option>Activo</option>
+              <option>Inactivo</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Permisos del módulo</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem .75rem;margin-top:.5rem;">
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:400;cursor:pointer;"><input type="checkbox" id="p-productos" style="accent-color:var(--primary);"> Gestionar Productos</label>
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:400;cursor:pointer;"><input type="checkbox" id="p-pedidos" style="accent-color:var(--primary);"> Gestionar Pedidos</label>
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:400;cursor:pointer;"><input type="checkbox" id="p-clientes" style="accent-color:var(--primary);"> Gestionar Clientes</label>
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:400;cursor:pointer;"><input type="checkbox" id="p-reportes" style="accent-color:var(--primary);"> Ver Reportes</label>
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:400;cursor:pointer;"><input type="checkbox" id="p-usuarios" style="accent-color:var(--primary);"> Gestionar Usuarios</label>
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:400;cursor:pointer;"><input type="checkbox" id="p-config" style="accent-color:var(--primary);"> Configuración</label>
+          </div>
+        </div>
+        <hr class="divider">
+        <div class="form-group">
+          <label class="form-label" for="usr-pass">Contraseña *</label>
+          <input id="usr-pass" type="password" class="form-control" placeholder="Mínimo 8 caracteres" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="usr-pass2">Confirmar Contraseña *</label>
+          <input id="usr-pass2" type="password" class="form-control" placeholder="Repite la contraseña" required>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-usuario')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-guardar-usr" onclick="guardarUsuario()">Guardar Usuario</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ELIMINAR -->
+<div class="modal-overlay" id="modal-elim-usr">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h2 class="modal-title">Eliminar Usuario</h2>
+      <button class="modal-close" onclick="cerrarModal('modal-elim-usr')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-danger"><span>⚠️</span><span>El usuario perderá acceso permanente al sistema. Esta acción no se puede deshacer.</span></div>
+      <p style="color:var(--text-soft);font-size:.9rem;">¿Confirmas la eliminación del usuario <strong id="usr-nombre-elim">Laura Rojas</strong>?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-elim-usr')">Cancelar</button>
+      <button class="btn btn-danger" id="btn-conf-elim-usr">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toasts"></div>
+
+<script>
+  document.querySelectorAll('.filter-chip').forEach(c => {
+    c.addEventListener('click', function(){
+      document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  function abrirModal(id){ document.getElementById(id).classList.add('active'); }
+  function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
+
+  document.getElementById('btn-nuevo-usr').addEventListener('click', function(){
+    document.getElementById('modal-usr-title').textContent = '➕ Nuevo Usuario';
+    document.getElementById('form-usuario').reset();
+    abrirModal('modal-usuario');
+  });
+
+  function editarUsr(id){
+    document.getElementById('modal-usr-title').textContent = '✏️ Editar Usuario';
+    document.getElementById('usr-nombre').value = 'Laura';
+    document.getElementById('usr-apellido').value = 'Rojas';
+    document.getElementById('usr-email').value = 'laura@ergovida.com';
+    document.getElementById('p-productos').checked = true;
+    document.getElementById('p-pedidos').checked = true;
+    abrirModal('modal-usuario');
+  }
+
+  function eliminarUsr(id){
+    document.getElementById('usr-nombre-elim').textContent = 'Usuario #' + id;
+    abrirModal('modal-elim-usr');
+  }
+
+  function guardarUsuario(){
+    cerrarModal('modal-usuario');
+    showToast('success','✓ Usuario guardado exitosamente');
+  }
+
+  document.getElementById('btn-conf-elim-usr').addEventListener('click', function(){
+    cerrarModal('modal-elim-usr');
+    showToast('error','🗑️ Usuario eliminado del sistema');
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('active'); });
+  });
+
+  function showToast(type,msg){
+    const c=document.getElementById('toasts');
+    const t=document.createElement('div');
+    t.className='toast '+type; t.textContent=msg;
+    c.appendChild(t); setTimeout(()=>t.remove(),3500);
+  }
+</script>
+<script src="../assets/js/admin-sidebar.js"></script>
+</body>
+</html>

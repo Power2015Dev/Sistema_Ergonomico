@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Catálogo de productos ergonómicos ErgoVida.">
+  <title>Catálogo | ErgoVida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/public.css">
+  <link rel="stylesheet" href="../assets/css/icons.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="site-logo">
+    <div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+        <path d="M20.5 13V7a2 2 0 0 0-2-2h-13a2 2 0 0 0-2 2v6"/>
+        <path d="M3 13h18"/><path d="M7 13v6M17 13v6M5 19h14"/>
+      </svg>
+    </div>
+    <div class="logo-text">ErgoVida</div>
+  </a>
+  <nav class="site-nav">
+    <a href="../index.html">Inicio</a>
+    <a href="catalogo.html" style="color:var(--primary);font-weight:700;">Catálogo</a>
+    <a href="#">Diagnóstico</a>
+    <a href="carrito.html" style="display:flex;align-items:center;gap:.4rem;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Carrito <span class="badge badge-primary" style="margin-left:.15rem;">2</span>
+    </a>
+    <a href="login.html" class="nav-cta">Mi Cuenta</a>
+  </nav>
+</header>
+
+<main>
+  <!-- CATALOG HEADER -->
+  <div style="background:linear-gradient(135deg,#f0fdf9,#ecfdf5);padding:3rem 5%;border-bottom:1px solid var(--border);">
+    <h1 style="font-size:2rem;font-weight:800;color:var(--secondary);">Catálogo de Productos</h1>
+    <p style="color:var(--text-soft);margin-top:.3rem;">120 productos ergonómicos certificados para tu bienestar</p>
+  </div>
+
+  <div class="catalog-layout">
+    <!-- SIDEBAR FILTERS -->
+    <aside class="filter-sidebar">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        Filtros
+      </h3>
+      <div class="filter-group">
+        <label class="group-label">Categoría</label>
+        <label class="filter-option"><input type="checkbox" checked> Sillas Operativas (42)</label>
+        <label class="filter-option"><input type="checkbox" checked> Escritorios Regulables (28)</label>
+        <label class="filter-option"><input type="checkbox"> Soportes y Brazos (19)</label>
+        <label class="filter-option"><input type="checkbox"> Alfombrillas (15)</label>
+        <label class="filter-option"><input type="checkbox"> Reposapiés (12)</label>
+        <label class="filter-option"><input type="checkbox"> Cojines Lumbares (8)</label>
+      </div>
+      <div class="filter-group">
+        <label class="group-label">Precio Máximo</label>
+        <input type="range" id="precio-max" min="20" max="1500" value="800">
+        <div class="range-val"><span>$20</span><span id="precio-val">$800</span></div>
+      </div>
+      <div class="filter-group">
+        <label class="group-label">Disponibilidad</label>
+        <label class="filter-option"><input type="checkbox" checked> En stock</label>
+        <label class="filter-option"><input type="checkbox"> Pocas unidades</label>
+        <label class="filter-option"><input type="checkbox"> Pre-orden</label>
+      </div>
+      <button class="btn btn-primary btn-block" id="btn-filtrar">Aplicar Filtros</button>
+      <button class="btn btn-secondary btn-block" id="btn-limpiar" style="margin-top:.6rem;">Limpiar</button>
+    </aside>
+
+    <!-- PRODUCTS -->
+    <div>
+      <div class="toolbar">
+        <div class="search-bar">
+          <span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <input type="text" id="buscar-producto" placeholder="Buscar productos...">
+        </div>
+        <div class="filters">
+          <button class="filter-chip active">Todos</button>
+          <button class="filter-chip">Sillas</button>
+          <button class="filter-chip">Escritorios</button>
+          <button class="filter-chip">Accesorios</button>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:.75rem;">
+          <select class="form-control" style="width:auto;padding:.5rem .85rem;font-size:.85rem;">
+            <option>Más populares</option>
+            <option>Precio: menor a mayor</option>
+            <option>Precio: mayor a menor</option>
+          </select>
+          <span style="font-size:.85rem;color:var(--text-muted);">70 resultados</span>
+        </div>
+      </div>
+
+      <div class="products-grid">
+
+        <div class="product-card">
+          <div class="product-img" style="background:#f1f5f9;padding:.75rem;position:relative;">
+            <img src="../assets/images/silla-pro.png" alt="Silla Ergonómica Pro X3"
+                 style="width:100%;height:100%;object-fit:contain;"
+                 onerror="this.src='https://images.unsplash.com/photo-1541558869434-2840d308329a?w=400&q=80';this.style.objectFit='cover'">
+            <span class="product-badge-corner"><span class="badge badge-success">Top Ventas</span></span>
+          </div>
+          <div class="product-card-body">
+            <div class="product-cat">Sillas Operativas</div>
+            <div class="product-name">Silla Ergonómica Pro X3</div>
+            <div class="product-desc">Soporte lumbar 3D dinámico, malla respirante, brazos 4D ajustables.</div>
+            <div class="product-footer">
+              <div class="product-price">$250.00</div>
+              <a href="detalle.html" class="btn btn-primary btn-sm">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img" style="background:#fafaf5;padding:.75rem;position:relative;">
+            <img src="../assets/images/escritorio.png" alt="Escritorio Motorizado Elite"
+                 style="width:100%;height:100%;object-fit:contain;"
+                 onerror="this.src='https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=400&q=80';this.style.objectFit='cover'">
+            <span class="product-badge-corner"><span class="badge badge-info">Nuevo</span></span>
+          </div>
+          <div class="product-card-body">
+            <div class="product-cat">Escritorios</div>
+            <div class="product-name">Escritorio Motorizado Elite</div>
+            <div class="product-desc">Ajuste eléctrico silencioso, memoria 4 posiciones, superficie premium.</div>
+            <div class="product-footer">
+              <div class="product-price">$420.00</div>
+              <a href="detalle.html" class="btn btn-primary btn-sm">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img" style="background:#eef2ff;padding:.75rem;position:relative;">
+            <img src="../assets/images/soporte.png" alt="Soporte Monitor UltraWide"
+                 style="width:100%;height:100%;object-fit:contain;"
+                 onerror="this.src='https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&q=80';this.style.objectFit='cover'">
+            <span class="product-badge-corner"><span class="badge badge-warning">Oferta</span></span>
+          </div>
+          <div class="product-card-body">
+            <div class="product-cat">Accesorios</div>
+            <div class="product-name">Soporte Monitor UltraWide</div>
+            <div class="product-desc">Brazo articulado 6 ejes, soporta hasta 38", gestión de cables integrada.</div>
+            <div class="product-footer">
+              <div class="product-price">$89.00</div>
+              <a href="detalle.html" class="btn btn-primary btn-sm">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img" style="background:#fdf8ee;padding:.75rem;position:relative;">
+            <img src="../assets/images/accesorios.png" alt="Reposamuñecas GelPro"
+                 style="width:100%;height:100%;object-fit:contain;"
+                 onerror="this.src='https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&q=80';this.style.objectFit='cover'">
+          </div>
+          <div class="product-card-body">
+            <div class="product-cat">Accesorios</div>
+            <div class="product-name">Reposamuñecas GelPro</div>
+            <div class="product-desc">Gel de memoria con funda de microfibra. Reduce tensión en muñecas y carpo.</div>
+            <div class="product-footer">
+              <div class="product-price">$29.00</div>
+              <a href="detalle.html" class="btn btn-primary btn-sm">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img" style="background:#f0fdf4;padding:.75rem;position:relative;">
+            <img src="../assets/images/reposapies.png" alt="Reposapiés Flex"
+                 style="width:100%;height:100%;object-fit:contain;"
+                 onerror="this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80';this.style.objectFit='cover'">
+          </div>
+          <div class="product-card-body">
+            <div class="product-cat">Reposapiés</div>
+            <div class="product-name">Reposapiés Ergonómico Flex</div>
+            <div class="product-desc">Ángulo ajustable de 0° a 30°. Superficie masajeadora antideslizante.</div>
+            <div class="product-footer">
+              <div class="product-price">$45.00</div>
+              <a href="detalle.html" class="btn btn-primary btn-sm">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img" style="background:#f1f5f9;padding:.75rem;position:relative;">
+            <img src="../assets/images/silla-pro.png" alt="Silla Executive Mesh"
+                 style="width:100%;height:100%;object-fit:contain;"
+                 onerror="this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80';this.style.objectFit='cover'">
+            <span class="product-badge-corner"><span class="badge badge-danger">-20%</span></span>
+          </div>
+          <div class="product-card-body">
+            <div class="product-cat">Sillas Operativas</div>
+            <div class="product-name">Silla Executive Mesh</div>
+            <div class="product-desc">Diseño ejecutivo con reposacabezas ajustable y mecanismo reclinable 5 pos.</div>
+            <div class="product-footer">
+              <div class="product-price">$320.00</div>
+              <a href="detalle.html" class="btn btn-primary btn-sm">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pagination">
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <span style="font-size:.85rem;color:var(--text-muted);padding:0 .5rem;">...</span>
+        <button class="page-btn">8</button>
+        <button class="page-btn">›</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer" style="margin-top:3rem;">
+  <div class="footer-bottom" style="border-top:none;padding-top:0;">
+    <span>© 2026 ErgoVida.</span>
+    <a href="../index.html" style="color:#64748b;">← Inicio</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('precio-max').addEventListener('input', function(){
+    document.getElementById('precio-val').textContent = '$' + this.value;
+  });
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

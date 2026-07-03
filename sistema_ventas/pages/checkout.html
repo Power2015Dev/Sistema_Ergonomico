@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finalizar Pedido | ErgoVida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/public.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="site-logo">
+    <div class="logo-mark">🪑</div>
+    <div class="logo-text">ErgoVida</div>
+  </a>
+  <nav class="site-nav">
+    <a href="carrito.html">← Volver al carrito</a>
+    <span style="color:var(--text-muted);font-size:.85rem;">Pago seguro 🔒</span>
+  </nav>
+</header>
+
+<div style="background:linear-gradient(135deg,#f0fdf9,#ecfdf5);padding:2rem 5%;border-bottom:1px solid var(--border);">
+  <h1 style="font-size:1.7rem;font-weight:800;color:var(--secondary);">Finalizar Pedido</h1>
+  <!-- STEPS -->
+  <div class="step-indicator" style="max-width:500px;margin-top:1.25rem;">
+    <div class="step done">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="step-circle">✓</div>
+        <div class="step-label">Carrito</div>
+      </div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step active">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="step-circle">2</div>
+        <div class="step-label">Datos</div>
+      </div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="step-circle">3</div>
+        <div class="step-label">Pago</div>
+      </div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="step-circle">4</div>
+        <div class="step-label">Confirmación</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="checkout-layout" style="margin-top:2rem;">
+  <form id="form-checkout">
+
+    <!-- CONTACT -->
+    <fieldset class="card" style="border:none;margin-bottom:1.25rem;">
+      <div class="card-header">
+        <h3 class="card-title">📋 1. Información de Contacto</h3>
+      </div>
+      <div class="card-body">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="ch-nombre">Nombres</label>
+            <input id="ch-nombre" type="text" class="form-control" placeholder="Juan Carlos" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ch-apellido">Apellidos</label>
+            <input id="ch-apellido" type="text" class="form-control" placeholder="Pérez Rodríguez" required>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="ch-email">Correo Electrónico</label>
+            <input id="ch-email" type="email" class="form-control" placeholder="juan@correo.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ch-tel">Teléfono</label>
+            <input id="ch-tel" type="tel" class="form-control" placeholder="+58 412 000 0000" required>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- SHIPPING -->
+    <fieldset class="card" style="border:none;margin-bottom:1.25rem;">
+      <div class="card-header">
+        <h3 class="card-title">🚚 2. Dirección de Entrega</h3>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label" for="ch-calle">Avenida / Calle / Sector</label>
+          <input id="ch-calle" type="text" class="form-control" placeholder="Av. Libertador, Torre Centro, Piso 3" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="ch-municipio">Municipio / Ciudad</label>
+            <input id="ch-municipio" type="text" class="form-control" placeholder="Caracas" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ch-estado">Estado</label>
+            <select id="ch-estado" class="form-control" required>
+              <option value="">Seleccionar estado...</option>
+              <option>Distrito Capital</option>
+              <option>Miranda</option>
+              <option>Carabobo</option>
+              <option>Aragua</option>
+              <option>Zulia</option>
+              <option>Lara</option>
+              <option>Táchira</option>
+              <option>Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-notas">Notas de entrega (opcional)</label>
+          <textarea id="ch-notas" class="form-control" placeholder="Instrucciones adicionales para el repartidor..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Método de envío</label>
+          <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:.3rem;">
+            <label style="display:flex;align-items:center;gap:.75rem;padding:1rem;border:2px solid var(--primary);border-radius:var(--radius);cursor:pointer;background:var(--primary-glow);">
+              <input type="radio" name="envio" value="express" checked style="accent-color:var(--primary);">
+              <div>
+                <strong>Envío Express</strong> – Gratis 🎁
+                <div style="font-size:.8rem;color:var(--text-muted);">3 – 5 días hábiles</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:center;gap:.75rem;padding:1rem;border:2px solid var(--border);border-radius:var(--radius);cursor:pointer;">
+              <input type="radio" name="envio" value="premium" style="accent-color:var(--primary);">
+              <div>
+                <strong>Envío Premium</strong> – $18.00
+                <div style="font-size:.8rem;color:var(--text-muted);">24 – 48 horas garantizadas</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- PAYMENT -->
+    <fieldset class="card" style="border:none;margin-bottom:1.25rem;">
+      <div class="card-header">
+        <h3 class="card-title">💳 3. Datos de Pago</h3>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;gap:.6rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+          <button type="button" class="filter-chip active" id="pm-tarjeta">💳 Tarjeta</button>
+          <button type="button" class="filter-chip" id="pm-transfer">🏦 Transferencia</button>
+          <button type="button" class="filter-chip" id="pm-zelle">💵 Zelle</button>
+          <button type="button" class="filter-chip" id="pm-paypal">🅿️ PayPal</button>
+        </div>
+
+        <div id="panel-tarjeta">
+          <div class="form-group">
+            <label class="form-label" for="ch-titular">Nombre en la Tarjeta</label>
+            <input id="ch-titular" type="text" class="form-control" placeholder="JUAN C PEREZ" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ch-numero">Número de Tarjeta</label>
+            <input id="ch-numero" type="text" class="form-control" maxlength="19" placeholder="0000 0000 0000 0000" required>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="ch-vence">Vencimiento</label>
+              <input id="ch-vence" type="text" class="form-control" placeholder="MM / AA" maxlength="7" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ch-cvc">CVC</label>
+              <input id="ch-cvc" type="text" class="form-control" placeholder="123" maxlength="4" required>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+  <!-- ORDER SUMMARY -->
+  <div class="cart-summary-box" style="position:sticky;top:80px;">
+    <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:1.25rem;color:var(--secondary);">📦 Tu Pedido</h3>
+
+    <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.25rem;">
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <div style="width:40px;height:40px;background:var(--primary-glow);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🪑</div>
+        <div style="flex:1;font-size:.85rem;"><strong>Silla Pro X3</strong> ×1<br><span style="color:var(--text-muted);">Gris Carbón</span></div>
+        <strong>$250.00</strong>
+      </div>
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <div style="width:40px;height:40px;background:#fef3c7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🖥️</div>
+        <div style="flex:1;font-size:.85rem;"><strong>Escritorio Elite</strong> ×1</div>
+        <strong>$420.00</strong>
+      </div>
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <div style="width:40px;height:40px;background:#ede9fe;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">⌨️</div>
+        <div style="flex:1;font-size:.85rem;"><strong>Reposamuñecas</strong> ×2</div>
+        <strong>$58.00</strong>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="summary-line"><span>Subtotal</span><span>$728.00</span></div>
+    <div class="summary-line"><span>Impuestos (16%)</span><span>$116.48</span></div>
+    <div class="summary-line"><span>Envío</span><span style="color:var(--success);">Gratis</span></div>
+    <div class="summary-total"><span>Total</span><span style="color:var(--primary);">$844.48</span></div>
+
+    <button type="submit" form="form-checkout" class="btn btn-primary btn-block btn-lg" style="margin-top:1.5rem;" id="btn-pagar">
+      🔒 Confirmar Pedido
+    </button>
+
+    <p style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:.85rem;">
+      Al confirmar aceptas nuestras <a href="#" style="color:var(--primary);">Políticas de Devolución</a>
+    </p>
+  </div>
+</main>
+
+<footer class="site-footer" style="margin-top:3rem;">
+  <div class="footer-bottom" style="border-top:none;padding-top:0;">
+    <span>© 2026 ErgoVida. Pago cifrado con SSL 🔒</span>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', function(){
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

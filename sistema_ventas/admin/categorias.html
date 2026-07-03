@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categorías | Panel ErgoVida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <link rel="stylesheet" href="../assets/css/icons.css">
+</head>
+<body>
+
+<div class="admin-layout">
+  <!-- SIDEBAR (inyectado por admin-sidebar.js) -->
+  <aside class="sidebar"></aside>
+
+  <header class="admin-header">
+    <div>
+      <span class="page-title">Categorías</span>
+      <span class="breadcrumb">/ Organización del catálogo</span>
+    </div>
+    <div class="header-actions">
+      <button class="notif-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+      <button class="btn btn-primary" id="btn-nueva-cat">Nueva Categoría</button>
+    </div>
+  </header>
+
+  <main class="admin-content">
+    <div class="page-header">
+      <h1>Gestión de Categorías</h1>
+      <p>Organiza los productos del catálogo en categorías descriptivas.</p>
+    </div>
+
+    <div class="grid-2" style="align-items:start;">
+      <!-- CATEGORIES GRID -->
+      <div>
+        <div class="grid-2">
+          <div class="card" style="cursor:pointer;border:2px solid transparent;transition:var(--transition);" onmouseenter="this.style.borderColor='var(--primary)'" onmouseleave="this.style.borderColor='transparent'">
+            <div class="card-body" style="text-align:center;padding:2rem 1.5rem;">
+              <div style="font-size:2.5rem;margin-bottom:.75rem;">🪑</div>
+              <h3 style="font-size:1rem;font-weight:700;margin-bottom:.3rem;">Sillas Operativas</h3>
+              <span class="badge badge-primary" style="margin-bottom:1rem;">42 productos</span>
+              <p style="font-size:.82rem;color:var(--text-muted);">Sillas ergonómicas para jornadas largas con soporte lumbar.</p>
+              <div style="display:flex;gap:.4rem;justify-content:center;margin-top:1rem;">
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(1)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(1)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="cursor:pointer;border:2px solid transparent;transition:var(--transition);" onmouseenter="this.style.borderColor='var(--primary)'" onmouseleave="this.style.borderColor='transparent'">
+            <div class="card-body" style="text-align:center;padding:2rem 1.5rem;">
+              <div style="font-size:2.5rem;margin-bottom:.75rem;">🖥️</div>
+              <h3 style="font-size:1rem;font-weight:700;margin-bottom:.3rem;">Escritorios Regulables</h3>
+              <span class="badge badge-info" style="margin-bottom:1rem;">28 productos</span>
+              <p style="font-size:.82rem;color:var(--text-muted);">Escritorios de altura ajustable eléctrica y manual.</p>
+              <div style="display:flex;gap:.4rem;justify-content:center;margin-top:1rem;">
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(2)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(2)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="cursor:pointer;border:2px solid transparent;transition:var(--transition);" onmouseenter="this.style.borderColor='var(--primary)'" onmouseleave="this.style.borderColor='transparent'">
+            <div class="card-body" style="text-align:center;padding:2rem 1.5rem;">
+              <div style="font-size:2.5rem;margin-bottom:.75rem;">🖲️</div>
+              <h3 style="font-size:1rem;font-weight:700;margin-bottom:.3rem;">Soportes y Brazos</h3>
+              <span class="badge badge-success" style="margin-bottom:1rem;">19 productos</span>
+              <p style="font-size:.82rem;color:var(--text-muted);">Soportes articulados para monitores y laptops.</p>
+              <div style="display:flex;gap:.4rem;justify-content:center;margin-top:1rem;">
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(3)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(3)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="cursor:pointer;border:2px solid transparent;transition:var(--transition);" onmouseenter="this.style.borderColor='var(--primary)'" onmouseleave="this.style.borderColor='transparent'">
+            <div class="card-body" style="text-align:center;padding:2rem 1.5rem;">
+              <div style="font-size:2.5rem;margin-bottom:.75rem;">🦶</div>
+              <h3 style="font-size:1rem;font-weight:700;margin-bottom:.3rem;">Reposapiés</h3>
+              <span class="badge badge-warning" style="margin-bottom:1rem;">12 productos</span>
+              <p style="font-size:.82rem;color:var(--text-muted);">Reposapiés con ángulo ajustable para mejorar la postura.</p>
+              <div style="display:flex;gap:.4rem;justify-content:center;margin-top:1rem;">
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(4)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(4)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="cursor:pointer;border:2px solid transparent;transition:var(--transition);" onmouseenter="this.style.borderColor='var(--primary)'" onmouseleave="this.style.borderColor='transparent'">
+            <div class="card-body" style="text-align:center;padding:2rem 1.5rem;">
+              <div style="font-size:2.5rem;margin-bottom:.75rem;">⌨️</div>
+              <h3 style="font-size:1rem;font-weight:700;margin-bottom:.3rem;">Accesorios de Escritorio</h3>
+              <span class="badge badge-primary" style="margin-bottom:1rem;">31 productos</span>
+              <p style="font-size:.82rem;color:var(--text-muted);">Reposamuñecas, alfombrillas y accesorios ergonómicos.</p>
+              <div style="display:flex;gap:.4rem;justify-content:center;margin-top:1rem;">
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(5)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(5)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="cursor:pointer;border:2px solid transparent;transition:var(--transition);" onmouseenter="this.style.borderColor='var(--primary)'" onmouseleave="this.style.borderColor='transparent'">
+            <div class="card-body" style="text-align:center;padding:2rem 1.5rem;">
+              <div style="font-size:2.5rem;margin-bottom:.75rem;">🛋️</div>
+              <h3 style="font-size:1rem;font-weight:700;margin-bottom:.3rem;">Cojines Lumbares</h3>
+              <span class="badge badge-success" style="margin-bottom:1rem;">8 productos</span>
+              <p style="font-size:.82rem;color:var(--text-muted);">Cojines de soporte lumbar y cervical para sillas.</p>
+              <div style="display:flex;gap:.4rem;justify-content:center;margin-top:1rem;">
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(6)" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(6)" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE VIEW -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Lista de Categorías</h3>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Categoría</th><th>Productos</th><th>Estado</th><th>Acciones</th></tr></thead>
+              <tbody>
+                <tr><td>🪑 Sillas Operativas</td><td>42</td><td><span class="badge badge-success">Activa</span></td><td><div style="display:flex;gap:.4rem;"><button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(1)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(1)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></td></tr>
+                <tr><td>🖥️ Escritorios Regulables</td><td>28</td><td><span class="badge badge-success">Activa</span></td><td><div style="display:flex;gap:.4rem;"><button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(2)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(2)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></td></tr>
+                <tr><td>🖲️ Soportes y Brazos</td><td>19</td><td><span class="badge badge-success">Activa</span></td><td><div style="display:flex;gap:.4rem;"><button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(3)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(3)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></td></tr>
+                <tr><td>🦶 Reposapiés</td><td>12</td><td><span class="badge badge-success">Activa</span></td><td><div style="display:flex;gap:.4rem;"><button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(4)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(4)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></td></tr>
+                <tr><td>⌨️ Accesorios de Escritorio</td><td>31</td><td><span class="badge badge-success">Activa</span></td><td><div style="display:flex;gap:.4rem;"><button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(5)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(5)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></td></tr>
+                <tr><td>🛋️ Cojines Lumbares</td><td>8</td><td><span class="badge badge-warning">Inactiva</span></td><td><div style="display:flex;gap:.4rem;"><button class="btn btn-secondary btn-sm btn-icon" onclick="editarCat(6)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCat(6)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL: NUEVA/EDITAR CATEGORÍA -->
+<div class="modal-overlay" id="modal-categoria">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-cat-title">Nueva Categoría</h2>
+      <button class="modal-close" onclick="cerrarModal('modal-categoria')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <form id="form-categoria">
+        <div class="form-group">
+          <label class="form-label" for="cat-nombre">Nombre de la Categoría *</label>
+          <input id="cat-nombre" type="text" class="form-control" placeholder="Ej: Sillas Operativas" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cat-icono">Icono (URL o Clase SVG)</label>
+          <input id="cat-icono" type="text" class="form-control" placeholder="Ej: icon-silla">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cat-desc">Descripción</label>
+          <textarea id="cat-desc" class="form-control" placeholder="Descripción breve de la categoría..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cat-estado">Estado</label>
+          <select id="cat-estado" class="form-control">
+            <option>Activa</option>
+            <option>Inactiva</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-categoria')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-guardar-cat" onclick="guardarCategoria()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ELIMINAR -->
+<div class="modal-overlay" id="modal-elim-cat">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h2 class="modal-title">Eliminar Categoría</h2>
+      <button class="modal-close" onclick="cerrarModal('modal-elim-cat')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-danger"><span>⚠️</span><span>Si eliminas esta categoría, los productos asociados quedarán sin categoría asignada.</span></div>
+      <p style="color:var(--text-soft);font-size:.9rem;">¿Confirmas eliminar la categoría <strong id="cat-nombre-elim">Sillas Operativas</strong>?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-elim-cat')">Cancelar</button>
+      <button class="btn btn-danger" id="btn-conf-elim-cat">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toasts"></div>
+
+<script>
+  function abrirModal(id){ document.getElementById(id).classList.add('active'); }
+  function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
+
+  document.getElementById('btn-nueva-cat').addEventListener('click', function(){
+    document.getElementById('modal-cat-title').textContent = '➕ Nueva Categoría';
+    document.getElementById('form-categoria').reset();
+    abrirModal('modal-categoria');
+  });
+
+  function editarCat(id){
+    document.getElementById('modal-cat-title').textContent = '✏️ Editar Categoría';
+    document.getElementById('cat-nombre').value = 'Sillas Operativas';
+    document.getElementById('cat-icono').value = '🪑';
+    abrirModal('modal-categoria');
+  }
+  function eliminarCat(id){ abrirModal('modal-elim-cat'); }
+  function guardarCategoria(){ cerrarModal('modal-categoria'); showToast('success','✓ Categoría guardada'); }
+
+  document.getElementById('btn-conf-elim-cat').addEventListener('click', function(){
+    cerrarModal('modal-elim-cat'); showToast('error','🗑️ Categoría eliminada');
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('active'); });
+  });
+
+  function showToast(type,msg){
+    const c=document.getElementById('toasts');
+    const t=document.createElement('div');
+    t.className='toast '+type; t.textContent=msg;
+    c.appendChild(t); setTimeout(()=>t.remove(),3500);
+  }
+</script>
+<script src="../assets/js/admin-sidebar.js"></script>
+</body>
+</html>
