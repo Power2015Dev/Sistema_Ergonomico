@@ -60,7 +60,9 @@
         <p>Ingresa tu correo y contraseña para continuar.</p>
       </div>
 
-      <form id="form-login" action="../index.html" method="GET">
+      <div id="login-error" style="display:none;padding:.85rem 1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);color:#dc2626;font-size:.88rem;margin-bottom:1rem;"></div>
+
+      <form id="form-login">
         <div class="form-group">
           <label class="form-label" for="email">Correo Electrónico</label>
           <input id="email" type="email" class="form-control" placeholder="ejemplo@correo.com" required>
@@ -72,7 +74,7 @@
 
         <div class="flex-between mb-2" style="font-size:.85rem;">
           <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-weight:500;color:var(--text-soft);">
-            <input type="checkbox" id="remember" style="accent-color:var(--primary);"> Recordarme
+            <input type="checkbox" id="is-admin" style="accent-color:var(--primary);"> Soy administrador
           </label>
           <a href="#" style="color:var(--primary);font-weight:600;">¿Olvidaste tu contraseña?</a>
         </div>
@@ -105,5 +107,60 @@
   </div>
 </div>
 
+<script src="../assets/js/api.js"></script>
+<script>
+document.getElementById('form-login').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const errorDiv = document.getElementById('login-error');
+    const btn = document.getElementById('btn-login');
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const isAdmin = document.getElementById('is-admin').checked;
+
+    errorDiv.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+
+    try {
+        let result;
+        
+        // 1. Intentar como cliente
+        try {
+            result = await API.loginCliente(email, password);
+            Session.set('cliente', result);
+            window.location.href = '../index.html';
+            return;
+        } catch (eCliente) {
+            // No es cliente, intentar como admin/vendedor
+            try {
+                result = await API.loginAdmin(email, password);
+                Session.set('admin', result);
+                
+                const successDiv = document.getElementById('login-success') || errorDiv;
+                successDiv.textContent = '¡Inicio de sesión exitoso! Redirigiendo...';
+                successDiv.style.display = 'block';
+                successDiv.style.background = '#f0fdf4';
+                successDiv.style.color = '#16a34a';
+                successDiv.style.borderColor = '#bbf7d0';
+                
+                setTimeout(() => {
+                    const sessionData = Session.get();
+                    if (sessionData && sessionData.usuario && sessionData.usuario.rol === 'vendedor') {
+                        window.location.href = '../vendedor/dashboard.html';
+                    } else {
+                        window.location.href = '../admin/dashboard.html';
+                    }
+                }, 1000);
+            } catch (errAdmin) {
+                errorDiv.textContent = errAdmin.error || 'Credenciales inválidas';
+                errorDiv.style.display = 'block';
+            }
+        }
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Acceder a mi cuenta';
+    }
+});
+</script>
 </body>
 </html>

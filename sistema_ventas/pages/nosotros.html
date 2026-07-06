@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nosotros | ErgoVida</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/public.css">
+  <style>
+    .about-hero {
+      background: linear-gradient(135deg, var(--secondary) 0%, #1e293b 100%);
+      color: white;
+      padding: 6rem 5%;
+      text-align: center;
+      border-radius: 0 0 40px 40px;
+      margin-bottom: 4rem;
+    }
+    .about-hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem; }
+    .about-hero p { font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+    .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 0 5% 4rem; }
+    .value-card { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.05); text-align: center; }
+    .value-card .icon { font-size: 3rem; margin-bottom: 1rem; }
+    .value-card h3 { color: var(--secondary); margin-bottom: 1rem; font-size: 1.4rem; }
+    .value-card p { color: var(--text-soft); line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="site-logo">
+    <div class="logo-mark">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+        <path d="M20.5 13V7a2 2 0 0 0-2-2h-13a2 2 0 0 0-2 2v6"/><path d="M3 13h18"/><path d="M7 13v6M17 13v6M5 19h14"/>
+      </svg>
+    </div>
+    <div class="logo-text">ErgoVida</div>
+  </a>
+  <nav class="site-nav">
+    <a href="../index.html">Inicio</a>
+    <a href="catalogo.html">Catálogo</a>
+    <a href="nosotros.html" style="color:var(--primary);font-weight:600;">Nosotros</a>
+    <div id="nav-auth-container" style="display:flex;align-items:center;gap:1rem;">
+      <a href="login.html" class="nav-cta">Ingresar</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="about-hero">
+    <h1>Transformando el Trabajo</h1>
+    <p>Nacimos en 2026 con una misión simple: erradicar el dolor de espalda de los profesionales modernos a través de ingeniería ergonómica de precisión.</p>
+  </section>
+
+  <section class="values-grid">
+    <div class="value-card">
+      <div class="icon">🔬</div>
+      <h3>Ciencia primero</h3>
+      <p>Cada producto que diseñamos pasa por rigurosas pruebas biomecánicas. No hacemos muebles, creamos soluciones de salud para tu columna.</p>
+    </div>
+    <div class="value-card">
+      <div class="icon">🌱</div>
+      <h3>Materiales Premium</h3>
+      <p>Utilizamos maderas sustentables, aluminios aeroespaciales y mallas transpirables de grado médico que duran toda la vida.</p>
+    </div>
+    <div class="value-card">
+      <div class="icon">🤝</div>
+      <h3>Compromiso Total</h3>
+      <p>Nuestra garantía de 10 años no es solo marketing. Creemos tanto en lo que hacemos que estamos dispuestos a respaldarlo por una década.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">
+    <span>© 2026 ErgoVida. Todos los derechos reservados.</span>
+  </div>
+</footer>
+
+<script src="../assets/js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const authContainer = document.getElementById('nav-auth-container');
+    if (Session.isLoggedIn()) {
+        const userName = Session.getUserName();
+        authContainer.innerHTML = `
+            <a href="carrito.html" style="position:relative;display:flex;align-items:center;gap:.3rem;text-decoration:none;">
+              🛒 <span class="carrito-count badge badge-danger" style="position:absolute;top:-8px;right:-15px;padding:.15rem .35rem;font-size:.7rem;">0</span>
+            </a>
+            <div style="display:flex;align-items:center;gap:.5rem;margin-left:.5rem;border-left:1px solid var(--border);padding-left:1rem;">
+                <span style="font-weight:600;font-size:.9rem;">${userName}</span>
+                <button onclick="Session.clear(); window.location.reload();" class="btn btn-secondary btn-sm" style="padding:.3rem .6rem;">Salir</button>
+            </div>
+        `;
+        Carrito.updateUI();
+    }
+});
+</script>
+</body>
+</html>

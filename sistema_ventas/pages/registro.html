@@ -31,15 +31,32 @@
         <p>Completa el formulario para comenzar tu experiencia ergonómica.</p>
       </div>
 
-      <form id="form-registro" action="login.html" method="GET">
-        <div class="grid-2">
+      <div id="reg-error" style="display:none;padding:.85rem 1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);color:#dc2626;font-size:.88rem;margin-bottom:1rem;"></div>
+      <div id="reg-success" style="display:none;padding:.85rem 1rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius);color:#16a34a;font-size:.88rem;margin-bottom:1rem;"></div>
+
+      <div style="display:flex;gap:1rem;margin-bottom:1.5rem;">
+        <label style="flex:1;background:var(--bg);padding:.8rem;border-radius:var(--radius);border:1px solid var(--primary);cursor:pointer;display:flex;align-items:center;gap:.5rem;" id="lbl-cliente">
+          <input type="radio" name="tipo_cuenta" value="cliente" checked onchange="toggleTipoCuenta()"> 🛒 Soy Comprador
+        </label>
+        <label style="flex:1;background:var(--bg);padding:.8rem;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:.5rem;" id="lbl-vendedor">
+          <input type="radio" name="tipo_cuenta" value="vendedor" onchange="toggleTipoCuenta()"> 🏪 Soy Vendedor
+        </label>
+      </div>
+
+      <form id="form-registro">
+        <div class="form-group" id="group-nombre-completo">
+          <label class="form-label" for="nombre_completo">Nombre Completo</label>
+          <input id="nombre_completo" type="text" class="form-control" placeholder="Juan Pérez" required>
+        </div>
+        
+        <div class="grid-2" id="group-nombres-separados" style="display:none;">
           <div class="form-group">
             <label class="form-label" for="nombre">Nombre</label>
-            <input id="nombre" type="text" class="form-control" placeholder="Juan" required>
+            <input id="nombre" type="text" class="form-control" placeholder="Juan">
           </div>
           <div class="form-group">
             <label class="form-label" for="apellido">Apellido</label>
-            <input id="apellido" type="text" class="form-control" placeholder="Pérez" required>
+            <input id="apellido" type="text" class="form-control" placeholder="Pérez">
           </div>
         </div>
 
@@ -48,26 +65,19 @@
           <input id="reg-email" type="email" class="form-control" placeholder="juan@correo.com" required>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="group-telefono">
           <label class="form-label" for="telefono">Teléfono (opcional)</label>
           <input id="telefono" type="tel" class="form-control" placeholder="+58 412 000 0000">
         </div>
 
         <div class="form-group">
           <label class="form-label" for="reg-pass">Contraseña</label>
-          <input id="reg-pass" type="password" class="form-control" placeholder="Mínimo 8 caracteres" required>
+          <input id="reg-pass" type="password" class="form-control" placeholder="Mínimo 8 caracteres" required minlength="8">
         </div>
 
         <div class="form-group">
           <label class="form-label" for="reg-pass2">Confirmar Contraseña</label>
           <input id="reg-pass2" type="password" class="form-control" placeholder="Repite tu contraseña" required>
-        </div>
-
-        <div class="form-group" style="display:flex;align-items:flex-start;gap:.6rem;">
-          <input type="checkbox" id="terminos" style="accent-color:var(--primary);margin-top:.2rem;" required>
-          <label for="terminos" style="font-size:.85rem;color:var(--text-soft);font-weight:400;margin:0;cursor:pointer;">
-            Acepto los <a href="#" style="color:var(--primary);font-weight:600;">Términos de Servicio</a> y la <a href="#" style="color:var(--primary);font-weight:600;">Política de Privacidad</a>
-          </label>
         </div>
 
         <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-registro">
@@ -81,6 +91,75 @@
     </div>
   </div>
 </div>
+
+<script src="../assets/js/api.js"></script>
+<script>
+function toggleTipoCuenta() {
+    const isVendedor = document.querySelector('input[name="tipo_cuenta"]:checked').value === 'vendedor';
+    document.getElementById('lbl-cliente').style.borderColor = isVendedor ? 'var(--border)' : 'var(--primary)';
+    document.getElementById('lbl-vendedor').style.borderColor = isVendedor ? 'var(--primary)' : 'var(--border)';
+    
+    document.getElementById('group-nombre-completo').style.display = isVendedor ? 'none' : 'block';
+    document.getElementById('group-nombres-separados').style.display = isVendedor ? 'grid' : 'none';
+    document.getElementById('group-telefono').style.display = isVendedor ? 'none' : 'block';
+    
+    document.getElementById('nombre_completo').required = !isVendedor;
+    document.getElementById('nombre').required = isVendedor;
+    document.getElementById('apellido').required = isVendedor;
+}
+
+document.getElementById('form-registro').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const errorDiv = document.getElementById('reg-error');
+    const successDiv = document.getElementById('reg-success');
+    const btn = document.getElementById('btn-registro');
+
+    const password = document.getElementById('reg-pass').value;
+    const password2 = document.getElementById('reg-pass2').value;
+    const isVendedor = document.querySelector('input[name="tipo_cuenta"]:checked').value === 'vendedor';
+
+    errorDiv.style.display = 'none';
+    successDiv.style.display = 'none';
+
+    if (password !== password2) {
+        errorDiv.textContent = 'Las contraseñas no coinciden';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Creando cuenta...';
+
+    try {
+        if (isVendedor) {
+            await API.registerAdmin({
+                nombre: document.getElementById('nombre').value.trim(),
+                apellido: document.getElementById('apellido').value.trim(),
+                email: document.getElementById('reg-email').value.trim(),
+                password: password,
+                rol: 'vendedor'
+            });
+        } else {
+            await API.registerCliente({
+                nombre_completo: document.getElementById('nombre_completo').value.trim(),
+                email: document.getElementById('reg-email').value.trim(),
+                password: password,
+                telefono: document.getElementById('telefono').value.trim() || null
+            });
+        }
+        
+        successDiv.textContent = '¡Cuenta creada exitosamente! Redirigiendo al login...';
+        successDiv.style.display = 'block';
+        setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+    } catch (err) {
+        errorDiv.textContent = err.error || 'Error al crear la cuenta';
+        errorDiv.style.display = 'block';
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Crear mi cuenta gratis';
+    }
+});
+</script>
 
 </body>
 </html>

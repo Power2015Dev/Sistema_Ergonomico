@@ -261,5 +261,83 @@
   </main>
 </div>
 
+<div class="toast-container" id="toasts"></div>
+
+<script src="../assets/js/api.js"></script>
+<script>
+async function cargarDashboard() {
+    try {
+        // Cargar productos
+        const prodResult = await API.getProductos();
+        const productos = prodResult.data || [];
+
+        // Actualizar stats
+        const stats = document.querySelectorAll('.stat-value');
+        if (stats.length >= 4) {
+            const totalVentas = productos.reduce((s, p) => s + (p.precio * (p.stock > 0 ? 1 : 0)), 0);
+            stats[3].textContent = productos.length;
+        }
+
+        // Actualizar tabla Stock Bajo
+        const stockBajo = productos.filter(p => p.stock <= 10).sort((a, b) => a.stock - b.stock).slice(0, 5);
+        const stockTbody = document.querySelectorAll('.data-table tbody')[1];
+        if (stockTbody && stockBajo.length > 0) {
+            const fallback = 'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=60&q=80';
+            stockTbody.innerHTML = stockBajo.map(p => {
+                let badge = '<span class="badge badge-warning">Bajo</span>';
+                let color = 'color:var(--warning);';
+                if (p.stock === 0) { badge = '<span class="badge badge-danger">Agotado</span>'; color = 'color:var(--danger);'; }
+                else if (p.stock <= 3) { badge = '<span class="badge badge-warning">Crítico</span>'; }
+                return `<tr>
+                    <td><div class="product-thumb-wrap">
+                        <img src="${p.imagen_url || '../assets/images/silla-pro.png'}" alt="${p.nombre}" class="prod-img-thumb" onerror="this.src='${fallback}'">
+                        <div class="product-thumb-info"><strong>${p.nombre}</strong><span>${p.sku}</span></div>
+                    </div></td>
+                    <td style="font-weight:700;${color}">${p.stock} uds</td>
+                    <td>${badge}</td>
+                </tr>`;
+            }).join('');
+        }
+    } catch (err) {
+        console.log('Dashboard: No se pudieron cargar datos del API.', err);
+    }
+
+    try {
+        // Cargar pedidos recientes
+        const pedResult = await API.getPedidos();
+        const pedidos = (pedResult.data || []).slice(0, 5);
+        const pedTbody = document.querySelectorAll('.data-table tbody')[0];
+        if (pedTbody && pedidos.length > 0) {
+            const stats = document.querySelectorAll('.stat-value');
+            if (stats.length >= 2) stats[1].textContent = pedResult.total_pedidos || pedidos.length;
+
+            pedTbody.innerHTML = pedidos.map(p => {
+                let badge = '<span class="badge badge-primary">Nuevo</span>';
+                if (p.estado_envio === 'entregado') badge = '<span class="badge badge-success">Entregado</span>';
+                else if (p.estado_envio === 'en_camino') badge = '<span class="badge badge-info">En camino</span>';
+                else if (p.estado_pago === 'cancelado') badge = '<span class="badge badge-danger">Cancelado</span>';
+                else if (p.estado_envio === 'pendiente') badge = '<span class="badge badge-warning">Procesando</span>';
+                return `<tr>
+                    <td>${p.codigo_pedido}</td>
+                    <td>Cliente #${p.id_cliente}</td>
+                    <td style="font-weight:700;color:var(--primary);">${formatPrice(p.total)}</td>
+                    <td>${badge}</td>
+                </tr>`;
+            }).join('');
+        }
+    } catch (err) {
+        console.log('Dashboard: No se pudieron cargar pedidos.', err);
+    }
+
+    // Actualizar nombre del admin
+    if (Session.isAdmin()) {
+        const h1 = document.querySelector('.page-header h1');
+        if (h1) h1.textContent = 'Bienvenido de vuelta, ' + Session.getUserName();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', cargarDashboard);
+</script>
+
 </body>
 </html>

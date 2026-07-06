@@ -45,7 +45,7 @@
   <div>
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Artículos (3)</h3>
+        <h3 class="card-title" id="cart-title">Artículos (0)</h3>
         <button class="btn btn-secondary btn-sm" id="btn-vaciar" style="display:flex;align-items:center;gap:.4rem;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           Vaciar carrito
@@ -57,80 +57,11 @@
             <thead>
               <tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th></th></tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="product-thumb-wrap">
-                    <img src="../assets/images/silla-pro.png" alt="Silla Pro X3" class="prod-img-thumb"
-                         onerror="this.src='https://images.unsplash.com/photo-1541558869434-2840d308329a?w=60&q=80'">
-                    <div class="product-thumb-info">
-                      <strong>Silla Ergonómica Pro X3</strong>
-                      <span>Color: Gris Carbón</span>
-                    </div>
-                  </div>
-                </td>
-                <td>$250.00</td>
-                <td><input type="number" value="1" min="1" max="10" class="form-control" style="width:70px;padding:.4rem .6rem;text-align:center;"></td>
-                <td style="font-weight:700;color:var(--primary);">$250.00</td>
-                <td>
-                  <button class="btn btn-danger btn-sm btn-icon" title="Quitar">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="product-thumb-wrap">
-                    <img src="../assets/images/escritorio.png" alt="Escritorio Elite" class="prod-img-thumb"
-                         onerror="this.src='https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=60&q=80'">
-                    <div class="product-thumb-info">
-                      <strong>Escritorio Motorizado Elite</strong>
-                      <span>Tamaño: 140×70 cm</span>
-                    </div>
-                  </div>
-                </td>
-                <td>$420.00</td>
-                <td><input type="number" value="1" min="1" max="5" class="form-control" style="width:70px;padding:.4rem .6rem;text-align:center;"></td>
-                <td style="font-weight:700;color:var(--primary);">$420.00</td>
-                <td>
-                  <button class="btn btn-danger btn-sm btn-icon" title="Quitar">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="product-thumb-wrap">
-                    <img src="../assets/images/accesorios.png" alt="Reposamuñecas GelPro" class="prod-img-thumb"
-                         onerror="this.src='https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=60&q=80'">
-                    <div class="product-thumb-info">
-                      <strong>Reposamuñecas GelPro</strong>
-                      <span>Color: Negro</span>
-                    </div>
-                  </div>
-                </td>
-                <td>$29.00</td>
-                <td><input type="number" value="2" min="1" max="10" class="form-control" style="width:70px;padding:.4rem .6rem;text-align:center;"></td>
-                <td style="font-weight:700;color:var(--primary);">$58.00</td>
-                <td>
-                  <button class="btn btn-danger btn-sm btn-icon" title="Quitar">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                  </button>
-                </td>
-              </tr>
+            <tbody id="cart-body">
+              <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-muted);">Tu carrito está vacío</td></tr>
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:1.25rem;">
-      <div class="card-body" style="display:flex;gap:.85rem;align-items:flex-end;">
-        <div class="form-group" style="flex:1;margin:0;">
-          <label class="form-label" for="cupon">Código de cupón</label>
-          <input id="cupon" type="text" class="form-control" placeholder="ERGO20, PROMO2026...">
-        </div>
-        <button class="btn btn-secondary" id="btn-cupon">Aplicar</button>
       </div>
     </div>
 
@@ -139,18 +70,16 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
         Seguir comprando
       </a>
-      <button class="btn btn-primary" id="btn-update">Actualizar carrito</button>
     </div>
   </div>
 
-  <div class="cart-summary-box">
+  <div class="cart-summary-box" id="cart-summary">
     <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;color:var(--secondary);">Resumen del Pedido</h3>
-    <div class="summary-line"><span>Subtotal (3 artículos)</span><span>$728.00</span></div>
-    <div class="summary-line"><span>Impuestos (16%)</span><span>$116.48</span></div>
+    <div class="summary-line"><span id="sum-items">Subtotal (0 artículos)</span><span id="sum-subtotal">$0.00</span></div>
+    <div class="summary-line"><span>Impuestos (16%)</span><span id="sum-tax">$0.00</span></div>
     <div class="summary-line"><span>Envío</span><span style="color:var(--success);font-weight:600;">Gratis</span></div>
-    <div class="summary-line"><span>Descuento</span><span style="color:var(--danger);">-$0.00</span></div>
-    <div class="summary-total"><span>Total</span><span style="color:var(--primary);">$844.48</span></div>
-    <a href="checkout.html" class="btn btn-primary btn-block btn-lg" style="margin-top:1.5rem;justify-content:center;gap:.5rem;">
+    <div class="summary-total"><span>Total</span><span style="color:var(--primary);" id="sum-total">$0.00</span></div>
+    <a href="checkout.html" class="btn btn-primary btn-block btn-lg" style="margin-top:1.5rem;justify-content:center;gap:.5rem;" id="btn-checkout">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       Proceder al Pago
     </a>
@@ -167,5 +96,73 @@
     <a href="../index.html" style="color:#64748b;">← Inicio</a>
   </div>
 </footer>
+
+<div class="toast-container" id="toasts"></div>
+
+<script src="../assets/js/api.js"></script>
+<script>
+function renderCarrito() {
+    const items = Carrito.getItems();
+    const tbody = document.getElementById('cart-body');
+    const title = document.getElementById('cart-title');
+
+    title.textContent = 'Artículos (' + items.length + ')';
+
+    if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-muted);">Tu carrito está vacío. <a href="catalogo.html" style="color:var(--primary);font-weight:600;">Ver catálogo</a></td></tr>';
+        document.getElementById('btn-checkout').style.pointerEvents = 'none';
+        document.getElementById('btn-checkout').style.opacity = '.5';
+    } else {
+        document.getElementById('btn-checkout').style.pointerEvents = '';
+        document.getElementById('btn-checkout').style.opacity = '';
+        tbody.innerHTML = items.map(item => {
+            const precio = Carrito.getPrecio(item);
+            const subtotal = precio * item.cantidad;
+            const fallback = 'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=60&q=80';
+            return `
+            <tr>
+              <td>
+                <div class="product-thumb-wrap">
+                  <img src="${item.imagen_url || '../assets/images/silla-pro.png'}" alt="${item.nombre}" class="prod-img-thumb" onerror="this.src='${fallback}'">
+                  <div class="product-thumb-info">
+                    <strong>${item.nombre}</strong>
+                    <span>${item.descripcion_corta || ''}</span>
+                  </div>
+                </div>
+              </td>
+              <td>${formatPrice(precio)}</td>
+              <td><input type="number" value="${item.cantidad}" min="1" max="99" class="form-control" style="width:70px;padding:.4rem .6rem;text-align:center;" onchange="Carrito.updateQty(${item.id_producto}, this.value); renderCarrito();"></td>
+              <td style="font-weight:700;color:var(--primary);">${formatPrice(subtotal)}</td>
+              <td>
+                <button class="btn btn-danger btn-sm btn-icon" title="Quitar" onclick="Carrito.removeItem(${item.id_producto}); renderCarrito(); showToast('error','Producto eliminado del carrito');">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </td>
+            </tr>`;
+        }).join('');
+    }
+
+    // Actualizar resumen
+    const count = Carrito.getCount();
+    const subtotal = Carrito.getSubtotal();
+    const tax = Carrito.getImpuestos();
+    const total = Carrito.getTotal();
+    document.getElementById('sum-items').textContent = 'Subtotal (' + count + ' artículos)';
+    document.getElementById('sum-subtotal').textContent = formatPrice(subtotal);
+    document.getElementById('sum-tax').textContent = formatPrice(tax);
+    document.getElementById('sum-total').textContent = formatPrice(total);
+}
+
+document.getElementById('btn-vaciar').addEventListener('click', function() {
+    if (Carrito.getCount() === 0) return;
+    if (confirm('¿Estás seguro de vaciar el carrito?')) {
+        Carrito.clear();
+        renderCarrito();
+        showToast('error', 'Carrito vaciado');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', renderCarrito);
+</script>
 </body>
 </html>

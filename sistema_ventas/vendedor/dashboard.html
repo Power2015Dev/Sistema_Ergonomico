@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Vendedor | ErgoVida</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    :root {
+      --vendor-primary: #8b5cf6;
+      --vendor-glow: #ede9fe;
+      --sidebar-width: 280px;
+    }
+    body { background: #f8fafc; margin: 0; padding: 0; display: flex; min-height: 100vh; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+    
+    /* Sidebar */
+    .sidebar { width: var(--sidebar-width); background: white; border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
+    .sidebar-header { padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid var(--border); }
+    .logo-mark { width: 36px; height: 36px; background: var(--vendor-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(139,92,246,0.3); }
+    .sidebar-nav { flex: 1; padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: .5rem; }
+    .sidebar-nav a { display: flex; align-items: center; gap: .75rem; padding: .85rem 1rem; color: var(--text-soft); text-decoration: none; border-radius: 12px; font-weight: 500; transition: all .2s; }
+    .sidebar-nav a:hover { background: #f1f5f9; color: var(--secondary); }
+    .sidebar-nav a.active { background: var(--vendor-primary); color: white; box-shadow: 0 4px 12px rgba(139,92,246,0.2); }
+    
+    /* Main Content */
+    .main-content { margin-left: var(--sidebar-width); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .topbar { background: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 90; }
+    .user-profile { display: flex; align-items: center; gap: .75rem; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--vendor-glow); color: var(--vendor-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    
+    .content-area { padding: 2.5rem; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
+    .page-header h1 { font-size: 2rem; font-weight: 800; color: var(--secondary); margin: 0 0 .5rem 0; letter-spacing: -0.02em; }
+    .page-header p { color: var(--text-soft); margin: 0; font-size: 1.05rem; }
+    
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+    .stat-card { background: white; padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: space-between; transition: transform .2s; }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    .stat-info .stat-title { font-size: .85rem; color: var(--text-soft); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .5rem; }
+    .stat-info .stat-value { font-size: 2rem; font-weight: 800; color: var(--secondary); letter-spacing: -0.02em; }
+    .stat-icon { width: 48px; height: 48px; border-radius: 14px; background: var(--vendor-glow); color: var(--vendor-primary); display: flex; align-items: center; justify-content: center; }
+    
+    /* Table */
+    .table-card { background: white; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.02); overflow: hidden; }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { background: #f8fafc; padding: 1rem 1.5rem; text-align: left; font-size: .8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid var(--border); }
+    .data-table td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover { background: #fcfcfc; }
+    
+    /* Badges */
+    .badge { padding: .35rem .75rem; border-radius: 20px; font-size: .75rem; font-weight: 600; }
+    .badge-active { background: #dcfce7; color: #16a34a; }
+    .badge-out { background: #fee2e2; color: #dc2626; }
+    
+    /* Modal Override */
+    .modal-content { border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+    .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); }
+    .modal-body { padding: 2rem; }
+    .modal-footer { padding: 1.5rem 2rem; background: #f8fafc; border-top: 1px solid var(--border); border-radius: 0 0 24px 24px; }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    <div style="font-weight:800;font-size:1.25rem;color:var(--secondary);letter-spacing:-.02em;">Mi Tienda</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#" class="active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> 
+      Mis Productos
+    </a>
+    <a href="#">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> 
+      Configuración
+    </a>
+  </nav>
+  <div style="padding:2rem;">
+    <button class="btn" style="width:100%;background:#f1f5f9;color:var(--text-soft);border:none;font-weight:600;" onclick="window.location.href='../index.html'">← Volver al Catálogo</button>
+  </div>
+</aside>
+
+<div class="main-content">
+  <header class="topbar">
+    <div style="font-weight:600;color:var(--vendor-primary);font-size:.9rem;letter-spacing:.05em;text-transform:uppercase;">Portal de Vendedores</div>
+    <div class="user-profile">
+      <div style="text-align:right;">
+        <div style="font-size:.9rem;font-weight:700;color:var(--secondary);" id="vendor-name">Cargando...</div>
+        <div style="font-size:.75rem;color:var(--text-muted);">Socio Comercial Verificado</div>
+      </div>
+      <div class="avatar">🏪</div>
+    </div>
+  </header>
+
+  <main class="content-area">
+    <div class="page-header">
+      <div>
+        <h1>Gestión de Inventario</h1>
+        <p>Publica y administra tus productos en la plataforma de ErgoVida.</p>
+      </div>
+      <button class="btn btn-primary" style="background:var(--vendor-primary);border-color:var(--vendor-primary);box-shadow:0 4px 15px rgba(139,92,246,0.3);" onclick="abrirModal('modal-producto')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nuevo Producto
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-info">
+          <div class="stat-title">Tus Productos</div>
+          <div class="stat-value" id="stat-activos">0</div>
+        </div>
+        <div class="stat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <div class="stat-title">Ventas Generadas</div>
+          <div class="stat-value" style="color:#16a34a;">$0.00</div>
+        </div>
+        <div class="stat-icon" style="background:#dcfce7;color:#16a34a;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <table class="data-table" id="tabla-productos">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dinámico -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Producto -->
+<div class="modal-overlay" id="modal-producto">
+  <div class="modal-content" style="max-width:500px;">
+    <div class="modal-header">
+      <h3 id="modal-prod-title">➕ Publicar Nuevo Producto</h3>
+      <button class="btn btn-icon" onclick="cerrarModal('modal-producto')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="form-producto">
+        <div class="form-group">
+          <label class="form-label">Nombre del Producto</label>
+          <input type="text" id="p-nombre" class="form-control" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group"><label class="form-label">SKU</label><input type="text" id="p-sku" class="form-control" required></div>
+          <div class="form-group"><label class="form-label">Precio ($)</label><input type="number" id="p-precio" class="form-control" step="0.01" required></div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group"><label class="form-label">Stock inicial</label><input type="number" id="p-stock" class="form-control" required></div>
+          <div class="form-group"><label class="form-label">URL Imagen</label><input type="text" id="p-imagen" class="form-control"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descripción</label>
+          <textarea id="p-desc" class="form-control" rows="3" required></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-producto')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-guardar-prod" onclick="guardarProducto()">Publicar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Eliminar -->
+<div class="modal-overlay" id="modal-eliminar">
+  <div class="modal-content" style="max-width:400px;text-align:center;">
+    <div style="font-size:3rem;margin-bottom:1rem;">🗑️</div>
+    <h3 style="margin-bottom:.5rem;">¿Retirar producto?</h3>
+    <p style="color:var(--text-soft);margin-bottom:1.5rem;font-size:.9rem;">
+      Vas a retirar "<strong id="prod-eliminar-nombre"></strong>". Esta acción no se puede deshacer.
+    </p>
+    <div style="display:flex;gap:1rem;justify-content:center;">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-eliminar')">Cancelar</button>
+      <button class="btn btn-danger" id="btn-confirmar-eliminar">Sí, retirar producto</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toasts"></div>
+
+<script src="../assets/js/api.js"></script>
+<script>
+  let misProductos = [];
+  let editandoId = null;
+  let eliminandoId = null;
+
+  function abrirModal(id){ document.getElementById(id).classList.add('active'); }
+  function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
+
+  async function cargarMisProductos() {
+      const tbody = document.querySelector('#tabla-productos tbody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;">Cargando mis productos...</td></tr>';
+
+      try {
+          // Nota: Simulamos obteniendo todos los productos por ahora
+          // En el futuro el backend debe filtrar por id_vendedor
+          const result = await API.getProductos();
+          misProductos = (result.data || []).slice(0, 5); // Mostrar solo algunos para simular
+          document.getElementById('stat-activos').textContent = misProductos.length;
+          
+          if (misProductos.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;">No tienes productos publicados.</td></tr>';
+              return;
+          }
+
+          tbody.innerHTML = misProductos.map(p => `
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:.75rem;">
+                <img src="${p.imagen_url || '../assets/images/silla-pro.png'}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;">
+                <strong>${p.nombre}</strong>
+              </div>
+            </td>
+            <td style="color:var(--text-muted);font-size:.82rem;">${p.sku}</td>
+            <td style="font-weight:700;color:var(--primary);">${formatPrice(p.precio)}</td>
+            <td style="font-weight:600;">${p.stock}</td>
+            <td><span class="badge badge-success">Activo</span></td>
+            <td>
+              <div style="display:flex;gap:.4rem;">
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="abrirEditar(${p.id_producto})">✏️</button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="abrirEliminar(${p.id_producto})">🗑️</button>
+              </div>
+            </td>
+          </tr>`).join('');
+      } catch (err) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--danger);">Error al conectar al servidor</td></tr>`;
+      }
+  }
+
+  function abrirEditar(id){
+    const p = misProductos.find(x => x.id_producto === id);
+    if (!p) return;
+    editandoId = id;
+    document.getElementById('modal-prod-title').textContent = '✏️ Editar Producto';
+    document.getElementById('btn-guardar-prod').textContent = 'Actualizar';
+    document.getElementById('p-nombre').value = p.nombre;
+    document.getElementById('p-sku').value = p.sku;
+    document.getElementById('p-desc').value = p.descripcion_larga || '';
+    document.getElementById('p-precio').value = p.precio;
+    document.getElementById('p-stock').value = p.stock;
+    document.getElementById('p-imagen').value = p.imagen_url || '';
+    abrirModal('modal-producto');
+  }
+
+  function abrirEliminar(id){
+    const p = misProductos.find(x => x.id_producto === id);
+    if (!p) return;
+    eliminandoId = id;
+    document.getElementById('prod-eliminar-nombre').textContent = p.nombre;
+    abrirModal('modal-eliminar');
+  }
+
+  async function guardarProducto(){
+    const btn = document.getElementById('btn-guardar-prod');
+    btn.disabled = true;
+    btn.textContent = 'Publicando...';
+
+    const data = {
+        id_categoria: 1,
+        sku: document.getElementById('p-sku').value,
+        nombre: document.getElementById('p-nombre').value,
+        descripcion_corta: document.getElementById('p-desc').value.substring(0, 100),
+        descripcion_larga: document.getElementById('p-desc').value,
+        precio: parseFloat(document.getElementById('p-precio').value),
+        stock: parseInt(document.getElementById('p-stock').value),
+        imagen_url: document.getElementById('p-imagen').value || null,
+        estado: True
+    };
+
+    try {
+        if (editandoId) {
+            await API.actualizarProducto(editandoId, data);
+            showToast('success', 'Producto actualizado');
+        } else {
+            await API.ingresarProducto(data);
+            showToast('success', 'Producto publicado exitosamente');
+        }
+        cerrarModal('modal-producto');
+        cargarMisProductos();
+    } catch (err) {
+        showToast('error', err.error || 'Error al guardar');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = editandoId ? 'Actualizar' : 'Publicar';
+    }
+  }
+
+  document.getElementById('btn-confirmar-eliminar').addEventListener('click', async function(){
+    if (!eliminandoId) return;
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Retirando...';
+
+    try {
+        await API.eliminarProducto(eliminandoId);
+        cerrarModal('modal-eliminar');
+        showToast('success', 'Producto retirado de tu tienda');
+        cargarMisProductos();
+    } catch (err) {
+        showToast('error', err.error || 'Error al retirar el producto');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sí, retirar producto';
+        eliminandoId = null;
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+      cargarMisProductos();
+      if(Session.isLoggedIn()) {
+          document.getElementById('vendor-name').textContent = Session.getUserName();
+      }
+  });
+
+</script>
+</body>
+</html>

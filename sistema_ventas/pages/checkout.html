@@ -185,29 +185,15 @@
   <div class="cart-summary-box" style="position:sticky;top:80px;">
     <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:1.25rem;color:var(--secondary);">📦 Tu Pedido</h3>
 
-    <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.25rem;">
-      <div style="display:flex;align-items:center;gap:.75rem;">
-        <div style="width:40px;height:40px;background:var(--primary-glow);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🪑</div>
-        <div style="flex:1;font-size:.85rem;"><strong>Silla Pro X3</strong> ×1<br><span style="color:var(--text-muted);">Gris Carbón</span></div>
-        <strong>$250.00</strong>
-      </div>
-      <div style="display:flex;align-items:center;gap:.75rem;">
-        <div style="width:40px;height:40px;background:#fef3c7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🖥️</div>
-        <div style="flex:1;font-size:.85rem;"><strong>Escritorio Elite</strong> ×1</div>
-        <strong>$420.00</strong>
-      </div>
-      <div style="display:flex;align-items:center;gap:.75rem;">
-        <div style="width:40px;height:40px;background:#ede9fe;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">⌨️</div>
-        <div style="flex:1;font-size:.85rem;"><strong>Reposamuñecas</strong> ×2</div>
-        <strong>$58.00</strong>
-      </div>
+    <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.25rem;" id="checkout-items">
+      <p style="color:var(--text-muted);text-align:center;">Cargando...</p>
     </div>
 
     <hr class="divider">
-    <div class="summary-line"><span>Subtotal</span><span>$728.00</span></div>
-    <div class="summary-line"><span>Impuestos (16%)</span><span>$116.48</span></div>
+    <div class="summary-line"><span>Subtotal</span><span id="ch-subtotal">$0.00</span></div>
+    <div class="summary-line"><span>Impuestos (16%)</span><span id="ch-tax">$0.00</span></div>
     <div class="summary-line"><span>Envío</span><span style="color:var(--success);">Gratis</span></div>
-    <div class="summary-total"><span>Total</span><span style="color:var(--primary);">$844.48</span></div>
+    <div class="summary-total"><span>Total</span><span style="color:var(--primary);" id="ch-total">$0.00</span></div>
 
     <button type="submit" form="form-checkout" class="btn btn-primary btn-block btn-lg" style="margin-top:1.5rem;" id="btn-pagar">
       🔒 Confirmar Pedido
@@ -225,12 +211,122 @@
   </div>
 </footer>
 
+<div class="toast-container" id="toasts"></div>
+
+<script src="../assets/js/api.js"></script>
 <script>
+// ── Renderizar items del checkout ──
+function renderCheckoutItems() {
+    const items = Carrito.getItems();
+    const container = document.getElementById('checkout-items');
+
+    if (items.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted);text-align:center;">No hay productos. <a href="catalogo.html" style="color:var(--primary);">Ir al catálogo</a></p>';
+        document.getElementById('btn-pagar').disabled = true;
+        return;
+    }
+
+    const colors = ['var(--primary-glow)', '#fef3c7', '#ede9fe', '#dbeafe', '#fce7f3'];
+    container.innerHTML = items.map((item, i) => {
+        const precio = Carrito.getPrecio(item);
+        return `
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <div style="width:40px;height:40px;background:${colors[i % colors.length]};border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">📦</div>
+          <div style="flex:1;font-size:.85rem;"><strong>${item.nombre}</strong> ×${item.cantidad}</div>
+          <strong>${formatPrice(precio * item.cantidad)}</strong>
+        </div>`;
+    }).join('');
+
+    document.getElementById('ch-subtotal').textContent = formatPrice(Carrito.getSubtotal());
+    document.getElementById('ch-tax').textContent = formatPrice(Carrito.getImpuestos());
+    document.getElementById('ch-total').textContent = formatPrice(Carrito.getTotal());
+}
+
+// ── Payment chips ──
 document.querySelectorAll('.filter-chip').forEach(chip => {
-  chip.addEventListener('click', function(){
-    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    this.classList.add('active');
-  });
+    chip.addEventListener('click', function(){
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+// ── Enviar pedido ──
+document.getElementById('form-checkout').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btn-pagar');
+    const items = Carrito.getItems();
+
+    if (items.length === 0) {
+        showToast('error', 'No hay productos en el carrito');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Procesando...';
+
+    try {
+        // Obtener método de pago seleccionado
+        const metodoChip = document.querySelector('.filter-chip.active');
+        const metodo = metodoChip ? metodoChip.textContent.trim() : 'Tarjeta';
+
+        // Crear el pedido
+        const pedidoData = {
+            codigo_pedido: generateOrderCode(),
+            id_cliente: Session.getUserId() || 1,
+            id_direccion: 1,
+            total: Carrito.getTotal(),
+            metodo_pago: metodo,
+            estado_pago: 'pendiente',
+            estado_envio: 'pendiente'
+        };
+
+        const pedidoResult = await API.insertarPedido(pedidoData);
+        const idPedido = pedidoResult.pedido.id_pedido;
+
+        // Crear detalles por cada item
+        for (const item of items) {
+            const precio = Carrito.getPrecio(item);
+            await API.insertarDetalle({
+                id_pedido: idPedido,
+                id_producto: item.id_producto,
+                cantidad: item.cantidad,
+                precio_unitario: precio,
+                subtotal: precio * item.cantidad
+            });
+        }
+
+        // Éxito
+        Carrito.clear();
+        document.querySelector('.checkout-layout').innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:4rem 2rem;">
+                <div style="font-size:4rem;margin-bottom:1rem;">✅</div>
+                <h2 style="font-size:1.6rem;font-weight:800;color:var(--secondary);margin-bottom:.5rem;">¡Pedido Confirmado!</h2>
+                <p style="color:var(--text-soft);max-width:400px;margin:0 auto 1.5rem;">Tu pedido <strong>${pedidoData.codigo_pedido}</strong> ha sido registrado exitosamente. Recibirás una confirmación pronto.</p>
+                <a href="../index.html" class="btn btn-primary btn-lg">Volver al inicio</a>
+            </div>`;
+
+    } catch (err) {
+        showToast('error', err.error || 'Error al procesar el pedido');
+        btn.disabled = false;
+        btn.textContent = '🔒 Confirmar Pedido';
+    }
+});
+
+// ── Auto-rellenar si hay sesión ──
+document.addEventListener('DOMContentLoaded', function() {
+    renderCheckoutItems();
+    const session = Session.get();
+    if (session && session.tipo === 'cliente') {
+        const c = session.cliente;
+        const nameField = document.getElementById('ch-nombre');
+        if (nameField && c.nombre_completo) {
+            const parts = c.nombre_completo.split(' ');
+            nameField.value = parts[0] || '';
+            document.getElementById('ch-apellido').value = parts.slice(1).join(' ') || '';
+        }
+        if (c.email) document.getElementById('ch-email').value = c.email;
+        if (c.telefono) document.getElementById('ch-tel').value = c.telefono;
+    }
 });
 </script>
 </body>

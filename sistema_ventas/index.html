@@ -96,9 +96,15 @@
   <nav class="site-nav">
     <a href="index.html">Inicio</a>
     <a href="pages/catalogo.html">Catálogo</a>
-    <a href="#">Diagnóstico</a>
-    <a href="#">Nosotros</a>
-    <a href="pages/login.html" class="nav-cta">Ingresar</a>
+    <a href="pages/nosotros.html">Nosotros</a>
+    
+    <form id="global-search-form" style="display:flex;align-items:center;background:var(--bg);border-radius:20px;padding:0.2rem 0.8rem;margin:0 1rem;border:1px solid var(--border);">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="global-search-input" placeholder="Buscar productos..." style="border:none;background:transparent;padding:0.4rem;font-size:0.85rem;outline:none;width:150px;">
+    </form>
+    <div id="nav-auth-container" style="display:flex;align-items:center;gap:1rem;">
+      <a href="pages/login.html" class="nav-cta">Ingresar</a>
+    </div>
   </nav>
 </header>
 
@@ -311,6 +317,44 @@
     <span style="color:#475569;">Diseñado para tu bienestar</span>
   </div>
 </footer>
+
+<script src="assets/js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const authContainer = document.getElementById('nav-auth-container');
+    
+    if (Session.isLoggedIn()) {
+        const userName = Session.getUserName();
+        let extraLink = '';
+        if (Session.isAdmin()) {
+            extraLink = `<a href="admin/dashboard.html" style="font-weight:600;color:var(--primary);">Panel Admin</a>`;
+        } else if (Session.isVendedor()) {
+            extraLink = `<a href="vendedor/dashboard.html" style="font-weight:600;color:#8b5cf6;">🏪 Portal Vendedor</a>`;
+        }
+        
+        authContainer.innerHTML = `
+            ${extraLink}
+            <a href="pages/carrito.html" style="position:relative;display:flex;align-items:center;gap:.3rem;text-decoration:none;">
+              🛒 <span class="carrito-count badge badge-danger" style="position:absolute;top:-8px;right:-15px;padding:.15rem .35rem;font-size:.7rem;">0</span>
+            </a>
+            <div style="display:flex;align-items:center;gap:.5rem;margin-left:.5rem;border-left:1px solid var(--border);padding-left:1rem;">
+                <span style="font-weight:600;font-size:.9rem;">${userName}</span>
+                <button onclick="Session.clear(); window.location.reload();" class="btn btn-secondary btn-sm" style="padding:.3rem .6rem;">Salir</button>
+            </div>
+        `;
+        Carrito.updateUI(); // Refrescar el número del carrito
+    }
+
+    // Buscador global
+    document.getElementById('global-search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const q = document.getElementById('global-search-input').value.trim();
+        if (q) {
+            window.location.href = 'pages/catalogo.html?q=' + encodeURIComponent(q);
+        }
+    });
+});
+</script>
 
 </body>
 </html>

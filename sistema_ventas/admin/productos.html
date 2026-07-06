@@ -337,7 +337,77 @@
 <!-- TOAST -->
 <div class="toast-container" id="toasts"></div>
 
+<script src="../assets/js/api.js"></script>
 <script>
+  let productosAdmin = [];
+
+  // ── Cargar productos desde la API ──
+  async function cargarProductosAdmin() {
+      const tbody = document.querySelector('#tabla-productos tbody');
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--text-muted);">Cargando productos...</td></tr>';
+
+      try {
+          const result = await API.getProductos();
+          productosAdmin = result.data || [];
+          renderTablaProductos(productosAdmin);
+
+          // Actualizar stats
+          const stats = document.querySelectorAll('.stat-value');
+          if (stats.length >= 4) {
+              stats[0].textContent = productosAdmin.length;
+              stats[1].textContent = productosAdmin.filter(p => p.estado && p.stock > 0).length;
+              stats[2].textContent = productosAdmin.filter(p => p.stock > 0 && p.stock <= 10).length;
+              stats[3].textContent = productosAdmin.filter(p => p.stock === 0).length;
+          }
+      } catch (err) {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--danger);">Error: ${err.error || 'No se pudo conectar al servidor'}</td></tr>`;
+      }
+  }
+
+  function renderTablaProductos(productos) {
+      const tbody = document.querySelector('#tabla-productos tbody');
+      if (productos.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--text-muted);">No hay productos registrados.</td></tr>';
+          return;
+      }
+      const fallback = 'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=60&q=80';
+      tbody.innerHTML = productos.map(p => {
+          let stockBadge = '<span class="badge badge-success">En stock</span>';
+          let stockColor = '';
+          if (p.stock === 0) { stockBadge = '<span class="badge badge-danger">Agotado</span>'; stockColor = 'color:var(--danger);'; }
+          else if (p.stock <= 10) { stockBadge = '<span class="badge badge-warning">Stock bajo</span>'; stockColor = 'color:var(--warning);'; }
+
+          return `
+          <tr>
+            <td><input type="checkbox" class="sel-row" style="accent-color:var(--primary);"></td>
+            <td>
+              <div class="product-thumb-wrap">
+                <img src="${p.imagen_url || '../assets/images/silla-pro.png'}" alt="${p.nombre}" class="prod-img-thumb" onerror="this.src='${fallback}'">
+                <div class="product-thumb-info">
+                  <strong>${p.nombre}</strong>
+                  <span>${p.descripcion_corta || ''}</span>
+                </div>
+              </div>
+            </td>
+            <td style="color:var(--text-muted);font-size:.82rem;">${p.sku}</td>
+            <td><span class="badge badge-primary">Cat ${p.id_categoria}</span></td>
+            <td style="font-weight:700;color:var(--primary);">${formatPrice(p.precio)}</td>
+            <td style="font-weight:600;${stockColor}">${p.stock}</td>
+            <td>${stockBadge}</td>
+            <td>
+              <div style="display:flex;gap:.4rem;">
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="abrirEditar(${p.id_producto})" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                <button class="btn btn-warning btn-sm btn-icon" onclick="verDetalle(${p.id_producto})" title="Ver"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="abrirEliminar(${p.id_producto})" title="Eliminar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+      // Actualizar paginación
+      document.querySelector('[style*="Mostrando"]') && 
+          (document.querySelector('[style*="Mostrando"]').textContent = `Mostrando ${productos.length} de ${productos.length} productos`);
+  }
+
   // Filter chips
   document.querySelectorAll('.filter-chip').forEach(c => {
     c.addEventListener('click', function(){
@@ -346,12 +416,25 @@
     });
   });
 
+  // Search
+  document.getElementById('search-prod').addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      const filtrados = productosAdmin.filter(p => 
+          p.nombre.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q)
+      );
+      renderTablaProductos(filtrados);
+  });
+
   // Modal helpers
+  let editandoId = null;
+  let eliminandoId = null;
+
   function abrirModal(id){ document.getElementById(id).classList.add('active'); }
   function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
 
   // Nuevo producto
   document.getElementById('btn-nuevo-prod').addEventListener('click', function(){
+    editandoId = null;
     document.getElementById('modal-prod-title').textContent = '➕ Nuevo Producto';
     document.getElementById('btn-guardar-prod').textContent = '💾 Guardar Producto';
     document.getElementById('form-producto').reset();
@@ -359,46 +442,100 @@
   });
 
   function abrirEditar(id){
-    document.getElementById('modal-prod-title').textContent = '✏️ Editar Producto #' + id;
+    const p = productosAdmin.find(x => x.id_producto === id);
+    if (!p) return;
+    editandoId = id;
+    document.getElementById('modal-prod-title').textContent = '✏️ Editar: ' + p.nombre;
     document.getElementById('btn-guardar-prod').textContent = '💾 Actualizar Producto';
-    // Simular carga de datos
-    document.getElementById('p-nombre').value = 'Silla Ergonómica Pro X3';
-    document.getElementById('p-sku').value = 'SILLA-PRO-X3';
-    document.getElementById('p-precio').value = '250.00';
-    document.getElementById('p-stock').value = '24';
+    document.getElementById('p-nombre').value = p.nombre;
+    document.getElementById('p-sku').value = p.sku;
+    document.getElementById('p-desc').value = p.descripcion_larga || p.descripcion_corta || '';
+    document.getElementById('p-precio').value = p.precio;
+    document.getElementById('p-precio-orig').value = p.precio_descuento || '';
+    document.getElementById('p-stock').value = p.stock;
+    document.getElementById('p-imagen').value = p.imagen_url || '';
     abrirModal('modal-producto');
   }
 
   function abrirEliminar(id){
-    document.getElementById('prod-eliminar-nombre').textContent = 'Producto #' + id;
+    const p = productosAdmin.find(x => x.id_producto === id);
+    if (!p) return;
+    eliminandoId = id;
+    document.getElementById('prod-eliminar-nombre').textContent = p.nombre;
     abrirModal('modal-eliminar');
   }
 
-  function verDetalle(id){ alert('Ver detalle del producto #' + id); }
-
-  function guardarProducto(){
-    cerrarModal('modal-producto');
-    showToast('success', '✓ Producto guardado exitosamente');
+  function verDetalle(id){ 
+    const p = productosAdmin.find(x => x.id_producto === id);
+    if (p) alert(`${p.nombre}\nSKU: ${p.sku}\nPrecio: $${p.precio}\nStock: ${p.stock}\n${p.descripcion_larga || ''}`);
   }
 
-  document.getElementById('btn-confirmar-eliminar').addEventListener('click', function(){
-    cerrarModal('modal-eliminar');
-    showToast('error', '🗑️ Producto eliminado del sistema');
+  // Guardar producto (crear nuevo via API)
+  async function guardarProducto(){
+    const btn = document.getElementById('btn-guardar-prod');
+    btn.disabled = true;
+    btn.textContent = 'Guardando...';
+
+    try {
+        const data = {
+            id_categoria: parseInt(document.getElementById('p-categoria').selectedIndex) || 1,
+            sku: document.getElementById('p-sku').value,
+            nombre: document.getElementById('p-nombre').value,
+            descripcion_corta: document.getElementById('p-desc').value.substring(0, 100),
+            descripcion_larga: document.getElementById('p-desc').value,
+            precio: parseFloat(document.getElementById('p-precio').value),
+            precio_descuento: parseFloat(document.getElementById('p-precio-orig').value) || null,
+            stock: parseInt(document.getElementById('p-stock').value),
+            imagen_url: document.getElementById('p-imagen').value || null,
+            estado: document.getElementById('p-estado').value !== 'borrador',
+            es_destacado: false
+        };
+
+        if (editandoId) {
+            await API.actualizarProducto(editandoId, data);
+            showToast('success', '✓ Producto actualizado exitosamente');
+        } else {
+            await API.ingresarProducto(data);
+            showToast('success', '✓ Producto guardado exitosamente');
+        }
+        
+        cerrarModal('modal-producto');
+        cargarProductosAdmin();
+    } catch (err) {
+        showToast('error', err.error || 'Error al guardar el producto');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = editandoId ? '💾 Actualizar Producto' : '💾 Guardar Producto';
+    }
+  }
+
+  document.getElementById('btn-confirmar-eliminar').addEventListener('click', async function(){
+    if (!eliminandoId) return;
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Eliminando...';
+
+    try {
+        await API.eliminarProducto(eliminandoId);
+        cerrarModal('modal-eliminar');
+        showToast('success', '🗑️ Producto eliminado del sistema');
+        cargarProductosAdmin();
+    } catch (err) {
+        showToast('error', err.error || 'Error al eliminar el producto');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sí, eliminar producto';
+        eliminandoId = null;
+    }
   });
-
-  function showToast(type, msg){
-    const c = document.getElementById('toasts');
-    const t = document.createElement('div');
-    t.className = 'toast ' + type;
-    t.textContent = msg;
-    c.appendChild(t);
-    setTimeout(() => t.remove(), 3500);
-  }
 
   // Close on overlay click
   document.querySelectorAll('.modal-overlay').forEach(o => {
     o.addEventListener('click', function(e){ if(e.target === this) this.classList.remove('active'); });
   });
+
+  // Iniciar
+  document.addEventListener('DOMContentLoaded', cargarProductosAdmin);
 </script>
 <script src="../assets/js/admin-sidebar.js"></script>
 </body>
