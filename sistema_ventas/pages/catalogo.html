@@ -49,25 +49,25 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
         Filtros
       </h3>
-      <div class="filter-group">
+      <div class="filter-group" id="filtros-categoria">
         <label class="group-label">Categoría</label>
-        <label class="filter-option"><input type="checkbox" checked> Sillas Operativas (42)</label>
-        <label class="filter-option"><input type="checkbox" checked> Escritorios Regulables (28)</label>
-        <label class="filter-option"><input type="checkbox"> Soportes y Brazos (19)</label>
-        <label class="filter-option"><input type="checkbox"> Alfombrillas (15)</label>
-        <label class="filter-option"><input type="checkbox"> Reposapiés (12)</label>
-        <label class="filter-option"><input type="checkbox"> Cojines Lumbares (8)</label>
+        <label class="filter-option"><input type="checkbox" value="silla" checked> Sillas Operativas</label>
+        <label class="filter-option"><input type="checkbox" value="escritorio" checked> Escritorios Regulables</label>
+        <label class="filter-option"><input type="checkbox" value="soporte" checked> Soportes y Brazos</label>
+        <label class="filter-option"><input type="checkbox" value="alfombrilla" checked> Alfombrillas</label>
+        <label class="filter-option"><input type="checkbox" value="reposapiés" checked> Reposapiés</label>
+        <label class="filter-option"><input type="checkbox" value="cojín" checked> Cojines Lumbares</label>
       </div>
       <div class="filter-group">
         <label class="group-label">Precio Máximo</label>
         <input type="range" id="precio-max" min="20" max="1500" value="800">
         <div class="range-val"><span>$20</span><span id="precio-val">$800</span></div>
       </div>
-      <div class="filter-group">
+      <div class="filter-group" id="filtros-stock">
         <label class="group-label">Disponibilidad</label>
-        <label class="filter-option"><input type="checkbox" checked> En stock</label>
-        <label class="filter-option"><input type="checkbox"> Pocas unidades</label>
-        <label class="filter-option"><input type="checkbox"> Pre-orden</label>
+        <label class="filter-option"><input type="checkbox" value="stock" checked> En stock</label>
+        <label class="filter-option"><input type="checkbox" value="poco"> Pocas unidades</label>
+        <label class="filter-option"><input type="checkbox" value="agotado"> Agotado</label>
       </div>
       <button class="btn btn-primary btn-block" id="btn-filtrar">Aplicar Filtros</button>
       <button class="btn btn-secondary btn-block" id="btn-limpiar" style="margin-top:.6rem;">Limpiar</button>
@@ -92,7 +92,7 @@
             <option>Precio: menor a mayor</option>
             <option>Precio: mayor a menor</option>
           </select>
-          <span style="font-size:.85rem;color:var(--text-muted);">70 resultados</span>
+          <span id="resultados-count" style="font-size:.85rem;color:var(--text-muted);">70 resultados</span>
         </div>
       </div>
 
@@ -130,8 +130,10 @@ async function cargarProductos() {
         todosLosProductos = result.data || [];
         productosFiltrados = [...todosLosProductos];
         renderProductos(productosFiltrados);
-        document.querySelector('.toolbar span[style]') && 
-            (document.querySelector('[style*="resultados"]').textContent = todosLosProductos.length + ' resultados');
+        const countEl = document.getElementById('resultados-count');
+        if (countEl) {
+            countEl.textContent = todosLosProductos.length + ' resultados';
+        }
     } catch (err) {
         container.innerHTML = `
             <div style="grid-column:1/-1;text-align:center;padding:3rem;">
@@ -210,12 +212,75 @@ document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', function() {
         document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
         this.classList.add('active');
+        aplicarFiltros();
     });
 });
 
 document.getElementById('precio-max').addEventListener('input', function() {
     document.getElementById('precio-val').textContent = '$' + this.value;
 });
+
+document.getElementById('btn-filtrar').addEventListener('click', aplicarFiltros);
+
+document.getElementById('btn-limpiar').addEventListener('click', () => {
+    document.querySelectorAll('#filtros-categoria input').forEach(cb => cb.checked = true);
+    document.querySelectorAll('#filtros-stock input').forEach(cb => cb.checked = true);
+    document.getElementById('precio-max').value = 1500;
+    document.getElementById('precio-val').textContent = '$1500';
+    document.getElementById('buscar-producto').value = '';
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    document.querySelector('.filter-chip').classList.add('active'); // 'Todos'
+    aplicarFiltros();
+});
+
+function aplicarFiltros() {
+    const searchQ = document.getElementById('buscar-producto').value.toLowerCase();
+    const activeChip = document.querySelector('.filter-chip.active').textContent;
+    const maxPrice = parseFloat(document.getElementById('precio-max').value);
+
+    const categoriasSeleccionadas = Array.from(document.querySelectorAll('#filtros-categoria input:checked')).map(cb => cb.value.toLowerCase());
+    const stockSeleccionado = Array.from(document.querySelectorAll('#filtros-stock input:checked')).map(cb => cb.value);
+
+    productosFiltrados = todosLosProductos.filter(p => {
+        const pNombre = (p.nombre || '').toLowerCase();
+        const pDesc = (p.descripcion_corta || '').toLowerCase();
+        const pSku = (p.sku || '').toLowerCase();
+
+        // Búsqueda de texto
+        const matchSearch = pNombre.includes(searchQ) || pDesc.includes(searchQ) || pSku.includes(searchQ);
+        
+        // Filtro de chip superior (Todos, Sillas, Escritorios, Accesorios)
+        let matchChip = true;
+        if (activeChip !== 'Todos') {
+            if (activeChip === 'Sillas') matchChip = pDesc.includes('silla') || pNombre.includes('silla');
+            else if (activeChip === 'Escritorios') matchChip = pDesc.includes('escritorio') || pNombre.includes('escritorio');
+            else if (activeChip === 'Accesorios') matchChip = !pNombre.includes('silla') && !pNombre.includes('escritorio');
+        }
+
+        // Filtro de categorías del sidebar
+        const catMatch = categoriasSeleccionadas.some(cat => pNombre.includes(cat) || pDesc.includes(cat));
+        
+        // Filtro de precio
+        const priceMatch = (p.precio_descuento || p.precio) <= maxPrice;
+
+        // Filtro de stock
+        let stockMatch = false;
+        if (stockSeleccionado.includes('stock') && p.stock > 5) stockMatch = true;
+        if (stockSeleccionado.includes('poco') && p.stock > 0 && p.stock <= 5) stockMatch = true;
+        if (stockSeleccionado.includes('agotado') && p.stock === 0) stockMatch = true;
+
+        // Si no hay categorías seleccionadas, no mostrar nada (o mostrar todo, según diseño, aquí asumimos que si no hay match no se muestra)
+        // Para simplificar, si el nombre no cuadra perfecto con las categorías, igual lo dejamos si 'matchChip' y 'priceMatch' están bien, 
+        // pero la idea es que la categoría lateral también filtre.
+        
+        // Un producto pasa si cumple TODAS las condiciones de los diferentes grupos
+        return matchSearch && matchChip && (categoriasSeleccionadas.length === 0 || catMatch) && priceMatch && (stockSeleccionado.length === 0 || stockMatch);
+    });
+
+    renderProductos(productosFiltrados);
+    const countEl = document.getElementById('resultados-count');
+    if(countEl) countEl.textContent = productosFiltrados.length + ' resultados';
+}
 
 // ── Iniciar ──
 document.addEventListener('DOMContentLoaded', cargarProductos);

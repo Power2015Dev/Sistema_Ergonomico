@@ -3,7 +3,7 @@
    ErgoVida — Sistema Ergonómico
    ═══════════════════════════════════════════════════ */
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = 'http://127.0.0.1:5000';
 
 // ─── Función base para todas las peticiones ───
 async function apiRequest(endpoint, options = {}) {
@@ -293,7 +293,39 @@ function generateOrderCode() {
     return 'PED-' + Date.now().toString(36).toUpperCase();
 }
 
-// Inicializar badges del carrito al cargar cualquier página
+// Inicializar elementos UI al cargar cualquier página
 document.addEventListener('DOMContentLoaded', () => {
     Carrito.updateUI();
+    
+    // Actualizar botón de "Mi Cuenta" si el usuario está logueado
+    if (Session.isLoggedIn()) {
+        const navCtas = document.querySelectorAll('.nav-cta');
+        navCtas.forEach(navCta => {
+            if (navCta.textContent.trim() === 'Mi Cuenta') {
+                const nombre = Session.getUserName().split(' ')[0];
+                navCta.innerHTML = nombre + ' <span style="font-size:1.1em;">👤</span>';
+                navCta.style.background = 'var(--secondary)';
+                navCta.style.borderColor = 'var(--secondary)';
+                navCta.style.display = 'flex';
+                navCta.style.alignItems = 'center';
+                navCta.style.gap = '0.4rem';
+                
+                // Determinar la URL correcta según el rol
+                let dashboardUrl = '';
+                if (Session.isAdmin()) dashboardUrl = 'admin/dashboard.html';
+                else if (Session.isVendedor()) dashboardUrl = 'vendedor/dashboard.html';
+                else dashboardUrl = 'pages/catalogo.html'; // Cliente regular
+                
+                // Ajustar ruta relativa dependiendo de si estamos en la raíz (index.html)
+                const path = window.location.pathname;
+                const isRoot = path.endsWith('index.html') || path === '/' || path.endsWith('Sistema_Ergonomico/sistema_ventas/');
+                
+                if (isRoot) {
+                    navCta.href = dashboardUrl;
+                } else {
+                    navCta.href = '../' + dashboardUrl;
+                }
+            }
+        });
+    }
 });
