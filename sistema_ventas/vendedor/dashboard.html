@@ -94,7 +94,7 @@
         <div style="font-size:.9rem;font-weight:700;color:var(--secondary);" id="vendor-name">Cargando...</div>
         <div style="font-size:.75rem;color:var(--text-muted);">Socio Comercial Verificado</div>
       </div>
-      <div class="avatar">🏪</div>
+      <div class="avatar" style="cursor:pointer;" onclick="abrirModalPerfil()" title="Editar Perfil">🏪</div>
     </div>
   </header>
 
@@ -201,6 +201,30 @@
   </div>
 </div>
 
+<!-- Modal Perfil -->
+<div class="modal-overlay" id="modal-perfil">
+  <div class="modal-content" style="max-width:400px;">
+    <div class="modal-header">
+      <h3 id="modal-perfil-title">👤 Editar Perfil (Demo)</h3>
+      <button class="btn btn-icon" onclick="cerrarModal('modal-perfil')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Nombre</label>
+        <input type="text" id="perfil-nombre" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Emoji de Avatar</label>
+        <input type="text" id="perfil-avatar" class="form-control" maxlength="2">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-perfil')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarPerfil()">Guardar Cambios</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast-container" id="toasts"></div>
 
 <script src="../assets/js/api.js"></script>
@@ -212,6 +236,37 @@
   function abrirModal(id){ document.getElementById(id).classList.add('active'); }
   function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
 
+  function abrirModalPerfil() {
+      const nameEl = document.getElementById('vendor-name');
+      const avatarEl = document.querySelector('.avatar');
+      document.getElementById('perfil-nombre').value = nameEl.textContent;
+      document.getElementById('perfil-avatar').value = avatarEl.textContent;
+      abrirModal('modal-perfil');
+  }
+
+  function guardarPerfil() {
+      const nuevoNombre = document.getElementById('perfil-nombre').value;
+      const nuevoAvatar = document.getElementById('perfil-avatar').value;
+      
+      if (!nuevoNombre.trim()) {
+          showToast('error', 'El nombre no puede estar vacío');
+          return;
+      }
+
+      document.getElementById('vendor-name').textContent = nuevoNombre;
+      document.querySelector('.avatar').textContent = nuevoAvatar || '🏪';
+      
+      const session = Session.get();
+      if (session && session.usuario) {
+          session.usuario.nombre = nuevoNombre;
+          session.usuario.apellido = '';
+          localStorage.setItem('ergovida_session', JSON.stringify(session));
+      }
+      
+      cerrarModal('modal-perfil');
+      showToast('success', 'Perfil actualizado (temporalmente)');
+  }
+
   async function cargarMisProductos() {
       const tbody = document.querySelector('#tabla-productos tbody');
       tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;">Cargando mis productos...</td></tr>';
@@ -220,7 +275,7 @@
           // Nota: Simulamos obteniendo todos los productos por ahora
           // En el futuro el backend debe filtrar por id_vendedor
           const result = await API.getProductos();
-          misProductos = (result.data || []).slice(0, 5); // Mostrar solo algunos para simular
+          misProductos = result.data || []; // Mostrar todos los productos
           document.getElementById('stat-activos').textContent = misProductos.length;
           
           if (misProductos.length === 0) {
@@ -289,7 +344,7 @@
         precio: parseFloat(document.getElementById('p-precio').value),
         stock: parseInt(document.getElementById('p-stock').value),
         imagen_url: document.getElementById('p-imagen').value || null,
-        estado: True
+        estado: true
     };
 
     try {

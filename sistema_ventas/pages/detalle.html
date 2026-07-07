@@ -97,9 +97,10 @@
       <h1>Silla Ergonómica Pro X3</h1>
       <p class="detail-sku">SKU: SILLA-PRO-X3-001 | Marca: ErgoVida Pro</p>
 
-      <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;">
-        <span class="rating-stars">★★★★★</span>
-        <span style="font-size:.85rem;color:var(--text-muted);">(4.9 — 347 reseñas)</span>
+      <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;cursor:pointer;" onclick="abrirModalResena()" title="Dejar una reseña">
+        <span class="rating-stars" id="product-stars">★★★★★</span>
+        <span style="font-size:.85rem;color:var(--text-muted);" id="product-review-count">(4.9 — 347 reseñas)</span>
+        <span style="font-size:.75rem;color:var(--primary);font-weight:600;margin-left:.5rem;text-decoration:underline;">Calificar producto</span>
       </div>
 
       <div class="detail-price">
@@ -189,6 +190,32 @@
   </div>
 </main>
 
+<!-- Modal Reseña -->
+<div class="modal-overlay" id="modal-resena">
+  <div class="modal-content" style="max-width:400px;text-align:center;">
+    <div class="modal-header" style="border-bottom:none;padding-bottom:0;position:relative;">
+      <button class="btn btn-icon" onclick="cerrarModal('modal-resena')" style="position:absolute;top:0;right:0;">✕</button>
+      <h3 style="margin-top:1rem;">Calificar Producto</h3>
+      <p style="color:var(--text-soft);font-size:.9rem;">Tu opinión nos ayuda a mejorar.</p>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;justify-content:center;gap:.5rem;font-size:2.5rem;color:#e2e8f0;cursor:pointer;margin-bottom:1.5rem;" id="star-selector">
+        <span class="star-item" data-val="1">★</span>
+        <span class="star-item" data-val="2">★</span>
+        <span class="star-item" data-val="3">★</span>
+        <span class="star-item" data-val="4">★</span>
+        <span class="star-item" data-val="5">★</span>
+      </div>
+      <textarea id="resena-texto" class="form-control" rows="3" placeholder="Escribe un comentario (opcional)..."></textarea>
+    </div>
+    <div class="modal-footer" style="border-top:none;background:white;padding-top:0;">
+      <button class="btn btn-primary btn-block" style="width:100%;justify-content:center;" onclick="enviarResena()">Enviar Reseña</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toasts"></div>
+
 <footer class="site-footer">
   <div class="footer-bottom" style="border-top:none;padding-top:0;">
     <span>© 2026 ErgoVida.</span>
@@ -197,10 +224,71 @@
 </footer>
 
 <script>
+let currentRating = 5;
+
+function abrirModal(id){ document.getElementById(id).classList.add('active'); }
+function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
+
+function showToast(type, message, duration = 3500) {
+    let container = document.getElementById('toasts');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toasts';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = 'toast ' + type;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
 function setImg(el, src) {
   document.getElementById('main-img').src = src;
   document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
+}
+
+function abrirModalResena() {
+  abrirModal('modal-resena');
+  updateStars(5);
+  document.getElementById('resena-texto').value = '';
+}
+
+function updateStars(rating) {
+  currentRating = rating;
+  document.querySelectorAll('.star-item').forEach(star => {
+      if (parseInt(star.dataset.val) <= rating) {
+          star.style.color = '#f59e0b'; // color oro
+      } else {
+          star.style.color = '#e2e8f0'; // gris
+      }
+  });
+}
+
+document.querySelectorAll('.star-item').forEach(star => {
+  star.addEventListener('click', (e) => {
+      updateStars(parseInt(e.target.dataset.val));
+  });
+});
+
+function enviarResena() {
+  cerrarModal('modal-resena');
+  showToast('success', '¡Gracias por tu reseña! (Guardada temporalmente)');
+  
+  // Update visually to mock the review
+  document.getElementById('product-review-count').textContent = `(${currentRating}.0 — 348 reseñas)`;
+  
+  let starsHtml = '';
+  for(let i=0; i<5; i++) {
+      if(i < currentRating) starsHtml += '★';
+      else starsHtml += '☆';
+  }
+  document.getElementById('product-stars').textContent = starsHtml;
 }
 </script>
 </body>
